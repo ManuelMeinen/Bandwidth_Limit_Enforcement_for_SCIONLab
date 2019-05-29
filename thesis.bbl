@@ -1,0 +1,64 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{perrig2017scion}{book}{}
+      \name{author}{4}{}{%
+        {{hash=7008e0fc312a01ec512c7479e63bf472}{%
+           family={Perrig},
+           familyi={P\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod}}}%
+        {{hash=cd0d3908cf3b5629bf94264789837d4f}{%
+           family={Szalachowski},
+           familyi={S\bibinitperiod},
+           given={Pawel},
+           giveni={P\bibinitperiod}}}%
+        {{hash=12d270d0ba9a29ff8523e59e5fa17968}{%
+           family={Reischuk},
+           familyi={R\bibinitperiod},
+           given={Raphael\bibnamedelima M},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=df138e84a17beef7d197db5ca8abdd2c}{%
+           family={Chuat},
+           familyi={C\bibinitperiod},
+           given={Laurent},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5d6b395235f43ee9c8d9fbc8e0d156b0}
+      \strng{fullhash}{9f31dba6cb562ccfb974d117f70c6497}
+      \strng{bibnamehash}{5d6b395235f43ee9c8d9fbc8e0d156b0}
+      \strng{authorbibnamehash}{5d6b395235f43ee9c8d9fbc8e0d156b0}
+      \strng{authornamehash}{5d6b395235f43ee9c8d9fbc8e0d156b0}
+      \strng{authorfullhash}{9f31dba6cb562ccfb974d117f70c6497}
+      \field{sortinit}{P}
+      \field{sortinithash}{8d51b3d5b78d75b54308d706b9bbe285}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{SCION: a secure Internet architecture}
+      \field{year}{2017}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
