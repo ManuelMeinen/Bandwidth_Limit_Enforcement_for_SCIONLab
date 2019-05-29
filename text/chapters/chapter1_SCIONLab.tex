@@ -36,7 +36,7 @@ Each \acs{SCIONLab}-\acs{AS} is based on a Ubuntu-16.04 machine. Either it is a 
 \item A \acl{BR} that routes (on a \acs{SCION}-level) the traffic leaving the \acs{AS}.
 \end{enumerate}
 
-As shown in Figure \ref{SCIONLab-AS} the \acl{BR} is also responsible for wrapping the \acs{SCION}-traffic into \acs{IP}-traffic. This is simply done by setting up an \acs{IP}-connection to the corresponding \acl{AP} and then send the \acs{SCION} packets over that connection. It is important to note that the \acl{BR} doesn't do any routing on an \acs{IP}-level.
+As shown in figure \ref{SCIONLab-AS} the \acl{BR} is also responsible for wrapping the \acs{SCION}-traffic into \acs{IP}-traffic. This is simply done by setting up an \acs{IP}-connection to the corresponding \acl{AP} and then send the \acs{SCION} packets over that connection. It is important to note that the \acl{BR} doesn't do any routing on an \acs{IP}-level.
 
 \begin{figure}[h]
 	\centering
@@ -46,12 +46,14 @@ As shown in Figure \ref{SCIONLab-AS} the \acl{BR} is also responsible for wrappi
 \end{figure}
 
 \subsection{SCIONLab AS}
-There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one is to set it up in a \acs{VM}. The other option is to set it up on a dedicated \acs{SCION}-device. Either way, you can do that by creating an account on \href{https://www.scionlab.org}{scionlab.org} and use the web interface to configure your \acs{AS} to your needs.
+There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one is to set it up in a \acs{VM}. The other option is to set it up on a dedicated \acs{SCION} system. Either way, you can do that by creating an account on \href{https://www.scionlab.org}{scionlab.org} and use the web interface to configure your \acs{AS} to your needs. This web portal is called \acs{SCIONLab} Coordination Service. After you configured your \acs{AS}, you can download the files that are used to either set up the \acs{VM} or the dedicated \acs{SCION} system. The \acl{AP} needs some time to receive the new configuration files to set up the connection to the user-\acs{AS}. When the \acs{AP} is ready, you will receive an e-mail that informs you about it. As visible in figure \ref{SCIONLab Coordination Service} the current version of the \acs{SCIONLab} Coordination Service doesn't allow you to configure any bandwidth limits.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/SCIONLab_Coordination_Service.png}
 	\caption{Web Interface of the SCIONLab Coordination Service }
+	\label{SCIONLab Coordination Service}
 \end{figure}
 
 \subsection{Topology}
+%TODO find a good way to explain a typical SCIONLab topology
