@@ -9,18 +9,17 @@ Traffic control in Linux is realized using a tool named \acs{TC}. It consists of
 \item \textbf{Policing}: This is the equivalent to shaping but for ingress traffic. It is worth noticing that traffic policing is more limited than traffic shaping, since there is no ingress queue.
 
 \item \textbf{Dropping}: This is a quite primitive approach of just dropping traffic that exceeds a given bandwidth. This is applicable for both ingress and egress traffic.
-
 \end{enumerate}
 
+For our needs, traffic shaping fits the best. But since we need to limit ingress traffic as well, and shaping only operates on egress traffic, we need a workaround. More about that in section  \ref{Ingress Traffic}. Traffic control using \acs{TC} is implemented using tree basic building blocks: \acp{QDISC}, classes and filters. They will be discussed in section \ref{TC}.
 
-\vfill
 \section{Theory}
 \subsection{Traffic Shaping}
 \subsection{Egress Traffic}
-\subsection{Ingress Traffic}
+\subsection{Ingress Traffic} \label{Ingress Traffic}
 \subsubsection{Traffic Policing using Filters}
 \subsubsection{Traffic Shaping using Virtual Interfaces}
-\section{TC}
+\section{TC} \label{TC}
 \subsection{Queuing Disciplines}
 \subsection{Classes}
 \subsection{Filters}
