@@ -1,4 +1,19 @@
 \chapter{Traffic Control}
+Traffic control in Linux is realized using a tool named \acs{TC}. It consists of four basic techniques.
+
+\begin{enumerate}
+\item \textbf{Shaping}: This is the technique we will be using in order to enforce an upper bandwidth limit. But in general, it is the process of manipulating the bandwidth. It can also be used to smooth out bursts in order to improve the quality of service. Shaping is done on egress traffic.
+
+\item \textbf{Scheduling}:This is the process of staging packets according to a schedule. Like this reordering of packets can be achieved. Scheduling as well happens with egress traffic.
+
+\item \textbf{Policing}: This is the equivalent to shaping but for ingress traffic. It is worth noticing that traffic policing is more limited than traffic shaping, since there is no ingress queue.
+
+\item \textbf{Dropping}: This is a quite primitive approach of just dropping traffic that exceeds a given bandwidth. This is applicable for both ingress and egress traffic.
+
+\end{enumerate}
+
+
+\vfill
 \section{Theory}
 \subsection{Traffic Shaping}
 \subsection{Egress Traffic}

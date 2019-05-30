@@ -30,10 +30,10 @@ The \acs{SCIONLab} network consists of multiple \acsp{ISD}, most of which are gr
 Each \acs{SCIONLab}-\acs{AS} is based on a Ubuntu-16.04 machine. Either it is a \acl{VM} or a dedicated \acs{SCION} system. Each \acs{SCIONLab}-\acs{AS} has to at least have the following services available: 
 \\
 \begin{enumerate}
-\item A \acl{BS} that sends and receives the \acsp{PCB}
-\item A \acl{PS} that stores the path segments and disseminates them to the customers.
-\item A \acl{CS} that holds the certificates which are used to validate the paths.
-\item A \acl{BR} that routes (on a \acs{SCION}-level) the traffic leaving the \acs{AS}.
+\item A \textbf{\acl{BS}} that sends and receives the \acsp{PCB}
+\item A \textbf{\acl{PS}} that stores the path segments and disseminates them to the customers.
+\item A \textbf{\acl{CS}} that holds the certificates which are used to validate the paths.
+\item A \textbf{\acl{BR}} that routes (on a \acs{SCION}-level) the traffic leaving the \acs{AS}.
 \end{enumerate}
 
 As shown in figure \ref{SCIONLab-AS} the \acl{BR} is also responsible for wrapping the \acs{SCION}-traffic into \acs{IP}-traffic. This is simply done by setting up an \acs{IP}-connection to the corresponding \acl{AP} and then send the \acs{SCION} packets over that connection. It is important to note that the \acl{BR} doesn't do any routing on an \acs{IP}-level.
