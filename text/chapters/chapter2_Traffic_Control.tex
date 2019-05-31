@@ -17,10 +17,14 @@ For our needs, traffic shaping fits best. But since we need to limit ingress tra
 \subsection{Traffic Shaping}
 As previously stated, traffic shaping happens with egress traffic. However, there is a special \acs{QDISC} that is handling ingress traffic. Since this \acs{QDISC} is the only one applicable on ingress traffic, it is called \textit{ingress}. The term \acl{QDISC}, in that case, is a bit misleading, because there is no such thing as an ingress queue. All the other \acsp{QDISC} handle egress traffic and are quite diverse. Each \acs{QDISC} has a shaping algorithm that shapes the traffic passing the corresponding \acs{QDISC}. \acsp{QDISC} can be either classful or classless (such as the ingress \acs{QDISC}). Classful \acsp{QDISC} have a shaping algorithm that can handle traffic, which is classified in different classes, differently. Both the classes and the classifiers, which are filters that determine which kind of traffic belongs to which class, are attached to the \acs{QDISC}. Classless \acsp{QDISC} can obviously not handle classes. However they can handle filters, which can either do policing on the traffic or i.e. redirect it to a different interface.
 \subsection{Egress Traffic}
+To enforce a bandwidth limit per \acs{IP} connection it makes sense to use a classful \acs{QDISC}, because this provides us with the flexibility to configure the classes exactly according to our needs. The best choice for a classful egress \acs{QDISC} that allows us to enforce bandwidth limits, seems to be an \ac{HTB}-\acs{QDISC}, which is based on the \ac{TBF} shaping algorithm. The \acs{TBF} algorithm roughly works as follows: 
+\\There is a bucket that holds tokens. Every token corresponds to approximately one byte. Whenever a packet arrives, the \acs{TBF} algorithm tries to consume as many tokens out of the token bucket as there are bytes in the packet. If there are enough tokens, then the packet can be sent at full speed. If there are not enough tokens, then the packet gets enqueued and has to wait until there are again enough tokens in the bucket. The bucket is constantly being filled with tokens at the rate we configured. Like this the bandwidth can be limited in average and at the same time allow short bursts at maximum speed, where the size of these bursts depends on the size of the bucket.
 
+\vfill
 \subsection{Ingress Traffic} \label{Ingress Traffic}
 \subsubsection{Traffic Policing using Filters}
 \subsubsection{Traffic Shaping using Virtual Interfaces}
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Interface-Setup.png}
