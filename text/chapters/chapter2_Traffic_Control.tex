@@ -55,6 +55,6 @@ Classes are used to configure classful \acsp{QDISC}. They are mostly used to han
 \subsection{Filters}
 There are two main types of filters:
 \begin{enumerate}
-\item \textbf{Classifiers:} They map traffic based on some metric to a class of a classful \acs{QDISC}, where the traffic is then further handled according to the leaf \acs{QDISC}
+\item \textbf{Classifiers:} They map traffic based on some metric to a class of a classful \acs{QDISC}, where the traffic is then further handled according to the leaf \acs{QDISC}.
 \item \textbf{Policers:} They are used to directly manipulate traffic. In our case we use them to redirect traffic from the ingress \acs{QDISC} to a virtual interface. But they can also be used to directly limit the bandwidth, however without the configuration options a classful \acs{QDISC} provides.
 \end{enumerate}
