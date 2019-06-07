@@ -20,6 +20,7 @@ As previously stated, traffic shaping happens with egress traffic. However, ther
 \subsection{Egress Traffic}
 To enforce a bandwidth limit per \acs{IP} connection it makes sense to use a classful \acs{QDISC}, because this provides us with the flexibility to configure the classes exactly according to our needs. The best choice for a classful egress \acs{QDISC} that allows us to enforce bandwidth limits, seems to be an \ac{HTB}-\acs{QDISC}, which is based on the \ac{TBF} shaping algorithm. The \acs{TBF} algorithm roughly works as follows: 
 \\There is a bucket that holds tokens. Every token corresponds to approximately one byte. Whenever a packet arrives, the \acs{TBF} algorithm tries to consume as many tokens out of the token bucket as there are bytes in the packet. If there are enough tokens, then the packet can be sent at full speed. If there are not enough tokens, then the packet gets enqueued and has to wait until there are again enough tokens in the bucket. The bucket is constantly being filled with tokens at the rate we configured. Like this the bandwidth can be limited in average and at the same time allow short bursts at maximum speed, where the size of these bursts depends on the size of the bucket. It is worth noticing, that the limitation looses in accuracy if the limit is above 1mbit/s. But the accuracy loss shouldn't be too severe for our use-case.
+More about the \acs{HTB}-\acs{QDISC} can be found in section 9.5.5. of \textit{Linux advanced routing \& traffic control HOWTO}\cite{hubert2002linux}.
 
 \newpage
 \subsection{Ingress Traffic} \label{Ingress Traffic}
@@ -39,6 +40,21 @@ There is only one \acs{QDISC} that can handle ingress traffic, namely the ingres
 \end{figure}
 
 \section{TC} \label{TC}
+\acs{TC} is a state of the art traffic control tool that is part of the iproute2 utility package and is by default installed on all \aclp{AP}. It can handle traffic based on any properties that can be found in the \acs{IP}-header, as well as marks that were set using iptables or ipchains.
+
 \subsection{Queuing Disciplines}
+
+A \acs{QDISC} or \acl{QDISC} is the controlling unit that sits between the kernel and the interface. Whenever the kernel wants to send something to an interface, it enqueues it via the \acs{QDISC} attached to the interface. The kernel then immediately tries to get as many packets as possible from the \acs{QDISC} in order to send them to the network adapter driver. The \acs{QDISC} can therefore decide in what manner it allows the kernel to get the packets back in order to send them. This also makes it clearer why there are very sophisticated egress \acsp{QDISC}, while there is only one very primitive ingress \acs{QDISC}.
+\\
+As previously mentioned, \acsp{QDISC} can be either classful or classless. If we want to do more than just simple policing or dropping then it is recommended to use classful \acsp{QDISC}, simply because classful \acsp{QDISC} can be configured more precisely, which makes them more powerful.
+
 \subsection{Classes}
+
+Classes are used to configure classful \acsp{QDISC}. They are mostly used to handle a subset of the entire traffic. Which kind of traffic belongs to that subset is determined by classifier filters, which are attached to the parent \acs{QDISC}. Each class has exactly one leaf \acs{QDISC}, to which there can again be classes attached. Like this classes and \acsp{QDISC} can build up a hierarchy tree, which is then propagated from top to bottom, namely from the root \acs{QDISC} to the leaf \acs{QDISC}.
+
 \subsection{Filters}
+There are two main types of filters:
+\begin{enumerate}
+\item \textbf{Classifiers:} They map traffic based on some metric to a class of a classful \acs{QDISC}, where the traffic is then further handled according to the leaf \acs{QDISC}
+\item \textbf{Policers:} They are used to directly manipulate traffic. In our case we use them to redirect traffic from the ingress \acs{QDISC} to a virtual interface. But they can also be used to directly limit the bandwidth, however without the configuration options a classful \acs{QDISC} provides.
+\end{enumerate}
