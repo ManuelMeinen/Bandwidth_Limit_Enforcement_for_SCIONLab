@@ -50,7 +50,7 @@ As previously mentioned, \acsp{QDISC} can be either classful or classless. If we
 
 \subsection{Classes}
 
-Classes are used to configure classful \acsp{QDISC}. They are mostly used to handle a subset of the entire traffic. Which kind of traffic belongs to that subset is determined by classifier filters, which are attached to the parent \acs{QDISC}. Each class has exactly one leaf \acs{QDISC}, to which there can again be classes attached. Like this classes and \acsp{QDISC} can build up a hierarchy tree, which is then propagated from top to bottom, namely from the root \acs{QDISC} to the leaf \acs{QDISC}.
+Classes are used to configure classful \acsp{QDISC}. They are mostly used to handle a subset of the entire traffic. Which kind of traffic belongs to that subset is determined by classifier filters, which are attached to the parent \acs{QDISC}. Each class has exactly one leaf \acs{QDISC}, but can have multiple non-leaf \acsp{QDISC}, to which there can again be classes attached. Like this classes and \acsp{QDISC} can build up a hierarchy tree, which is then propagated from top to bottom, namely from the root \acs{QDISC} to the leaf \acs{QDISC}.
 
 \subsection{Filters}
 There are two main types of filters:
