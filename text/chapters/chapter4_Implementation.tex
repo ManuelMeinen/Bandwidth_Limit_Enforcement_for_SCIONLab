@@ -36,15 +36,30 @@ This file contains some static variables that are constant throughout the entire
 This file is used to retrieve information about the interfaces configured on the host machine and bundle it together in interface objects.
 
 \item[$\bullet$]\textit{code\_base/links.py}:
+\\
+Analogously to the \textit{interfaces.py} file the \textit{links.py} file is used to bundle together information about links. This information is parsed form the \textit{link\_info.json} file. Furthermore, in this file the virtual interfaces are set up and mapped to their corresponding physical counterpart.
+
 \item[$\bullet$]\textit{code\_base/systeminfo.py}:
+\\
+The \textit{systeminfo.py} file is used to retrieve some information about the host like whether a file exists or which interface is used by default.
+
 \item[$\bullet$]\textit{code\_base/tc\_command\_generator.py}:
+\\
+The \acs{TC} command generator is used to generate the \acs{TC} commands that are used in order to configure the system. The generation functions return these commands as strings. They are later executed using the command executor.
+
 \item[$\bullet$]\textit{code\_base/tc\_logic.py}:
+\\
+This file is the centrepiece of the entire program. It defines the building blocks to build up the entire logic of our \acs{TC} hierarchy according to figure \ref{QDISC-Set-up}. The \ac{UML}-model in figure \ref{tc logic uml} visualizes the relevant building blocks and their attributes and functions. The most interesting function is probably the \textit{make()} function. It first uses the \acs{TC} command generator to get the command to turn it's properties into \acs{TC} configurations, executes the command using the command executor and then recursively calls \textit{make()} on the building blocks that are lower down in the hierarchy tree. Like this the entire \acs{TC} logic can be turned into \acs{TC} configuration on the host. 
+
 \item[$\bullet$]\textit{code\_base/virtual\_interfaces\_manager.py}:
+\\
+The virtual interface manager is used to set up and delete the virtual interface and to map them to their physical counterparts.
+
 \end{enumerate}
 
 \begin{figure}[h]
 	\centering
   	\includegraphics[width=\textwidth]{img/tc_logic_uml.png}
     \caption{UML-Model of \text{tc\_logic.py}}
-    \label{tc_logic_uml}
+    \label{tc logic uml}
 \end{figure}
