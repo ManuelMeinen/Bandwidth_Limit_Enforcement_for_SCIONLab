@@ -20,8 +20,8 @@ In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, 
 </div>
 \end{lstlisting}
 
-\begin{figure}[h]
-	\includegraphics[width=\textwidth]{img/user_as_form.png}
+\begin{figure}[H]
+	\includegraphics[width=0.7\textwidth]{img/user_as_form.png}
 	\centering
 	\caption{User-AS Configuration Form}
 	\label{User-AS Configuration Form}
@@ -29,15 +29,19 @@ In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, 
 
 \subsection{The Data Model}
 
-The \acs{SCIONLab} server is based on the Django framework.
+The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCIONLab}'s data model is based on Django's data model as showed in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
 
-\begin{figure}[h]
-	\includegraphics[width=\textwidth]{img/Django_diagram.png}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Django_diagram.png}
 	\caption{Django Model Dependency Diagram}
 	\label{Django Model Dependency Diagram}
 \end{figure}
 
 \subsection{Attachment Point Configuration}
+On the \aclp{AP} there will be a python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to start the \acs{SCION} services. Since the \acs{SCION} services get restarted after each reboot and whenever the configuration changed, it is sufficient to invoke the \textit{scionlab\_bw\_limiter} and enforce the limitations at this point.
+%TODO check if this is accurate 
+It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
 
 \section{Back End}
 
