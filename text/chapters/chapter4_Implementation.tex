@@ -2,7 +2,34 @@
 
 \section{Front end}
 
+\subsection{The SCIONLab Website}
 
+In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, I added the \ac{HTML} code snippet visible in listing \ref{HTML code}. This results in an additional text input field (as visible in figure \ref{User-AS Configuration Form}) that allows the user to add an upper limit for the bandwidth. If the user then clicks the \textbf{Create \acs{AS}} button, the input from that field is read into the data model. Updating the configuration of an existing \acs{AS} works similarly.
+
+\begin{lstlisting}[language=html, caption = HTML code snippet of the bandwidth field from user\_as\_form.html, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=HTML code]
+<div class="form-group has-feedback">
+  {{ form.bw_limit.label }}
+  <div class="input-group">
+    {% render_field form.bw_limit class="form-control" %}
+    <div class="input-group-append">
+      <span class="input-group-text bg-white">
+        <span class="fa fa-tachometer"/>
+      </span>
+    </div>
+  </div>
+</div>
+\end{lstlisting}
+
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{img/user_as_form.png}
+	\centering
+	\caption{User-AS Configuration Form}
+	\label{User-AS Configuration Form}
+\end{figure}
+
+\subsection{The Datamodel}
+
+\subsection{Attachment Point Configuration}
 
 \section{Back end}
 
