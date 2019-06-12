@@ -9,7 +9,7 @@ In order to do a proper conception of the bandwidth limiter for \acs{SCIONLab}, 
 
 We split up these three requirements into two sections. The first two belong to the front end of the project, where as the third requirement is part of the back end.
 
-\section{Front end}
+\section{Front End}
 
 The front end part of the project is all about the \acs{SCIONLab} server. The implementation of that server can be found on \href{https://github.com/netsec-ethz/scionlab}{github.com}. There is already a configuration page, where the customers can set the desired configuration for their user-\acs{AS}. On the same configuration page we simply add a field, where the customers can insert a bandwidth limit between 0 and the limit set by the \acs{SCIONLab} administrators. Other bandwidth limits get already rejected by the form.
 \\
@@ -17,7 +17,7 @@ The \acs{SCIONLab} server stores information about the entire topology of the \a
 \\
 The \acs{SCIONLab} server regularly generates files according to its data model that are then sent to the \acsp{AP}, in order to configure them for newly added or updated user-\acsp{AS}. These files are packed in a tarball and then delivered and unpacked on the \acsp{AP}. We can use this mechanism to deliver the information we need, in order to enforce the bandwidth limitations, to the \acsp{AP}. So we simply add a \ac{JSON}-file called \textit{link\_info.json} to that tarball, which holds the information we need to perform bandwidth limitations.
 
-\section{Back end}
+\section{Back End}
 
 The back end part is all about configuring the \acsp{AP} in a way that the bandwidth limits that are specified in the \textit{link\_info.json} file are put into effect. We do that using the \acs{TC} tool. However, there is no \acs{API} to use \acs{TC} in an automated way. Therefore we need to write a wrapper program, in order to configure \acs{TC} via the command line. This wrapper program is written in Python and is available on \href{https://github.com/ManuelMeinen/SCIONLab_Bandwidth_Limiter}{github.com}. Further details on how this program is implemented can be found in chapter \ref{Implementation}.
 \\

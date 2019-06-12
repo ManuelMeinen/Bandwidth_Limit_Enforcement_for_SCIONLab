@@ -1,6 +1,6 @@
 \chapter{Implementation} \label{Implementation}
 
-\section{Front end}
+\section{Front End}
 
 \subsection{The SCIONLab Website}
 
@@ -27,11 +27,19 @@ In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, 
 	\label{User-AS Configuration Form}
 \end{figure}
 
-\subsection{The Datamodel}
+\subsection{The Data Model}
+
+The \acs{SCIONLab} server is based on the Django framework.
+
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{img/Django_diagram.png}
+	\caption{Django Model Dependency Diagram}
+	\label{Django Model Dependency Diagram}
+\end{figure}
 
 \subsection{Attachment Point Configuration}
 
-\section{Back end}
+\section{Back End}
 
 The back end consists mainly of the python files listed below. Additionally there are some \acs{JSON}-files that are used to either safe some settings or store some text that would take up too much space in the code and is therefore put into a separate file for the sake of readability. The python files have the following functionality:
 
