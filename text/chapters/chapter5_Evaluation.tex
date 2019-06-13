@@ -22,9 +22,11 @@ Since the naive approach turned out to be to inaccurate to be of any use, I deci
 
 \section{iPerf3}
 
+iPerf3 is a state of the art network performance measurement tool. It is a successor of iPerf and iPerf2. However it has been completely rewritten in order to make the code base cleaner and simpler and is therefore not backward compatible with iPerf2. iPerf3 has been developed by \ac{ESnet}, which is a high-speed computer network provider for the United States Department of Energy. iPerf3 is open-source and can be found on \href{https://github.com/esnet/iperf}{github.com}.
+\\
+iPerf3 can test both \ac{TCP} as well as \acs{UDP} traffic. In our case we only need to test \acs{UDP} traffic. This can be done by passing the option \textit{-u} as an argument to iPerf3. When running it we need to specify a target bandwidth (option \textit{-b}). iPerf3 then tries to achieve this bandwidth by sending traffic out at this rate. To run iPerf3 in server mode we only have to pass \textit{-s} as an argument. For running it in the client mode we have to analogously pass the \textit{-c} option followed by the server's \acs{IP}-address. Last but not least, we can optionally set the buffer length of the buffer from which is sent and to which is received by passing the option \textit{-l} followed by a size in kilo bytes as an argument. As we will see in section \ref{Test Results}, this option is of quite a significance.
 
-
-\section{Test Results}
+\section{Test Results}\label{Test Results}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Evaluation-Bandwidth.png}
