@@ -49,7 +49,9 @@ iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
 
 \subsection{Interpretation of the Test Results}
 
-Figure \ref{Evaluation of the Bandwidth} shows the average bandwidth over ten samples for both ingress as well as egress traffic with respect to the buffer size.
+Figure \ref{Evaluation of the Bandwidth} shows the average bandwidth over ten samples for both ingress as well as egress traffic with respect to the buffer size. For the egress traffic the results look quite good. The average egress bandwidth lies slightly above the bandwidth limit. This is because we allow short bursts at a higher speed. Therefore, the limitations on egress traffic can be considered as effective and stable.
+\\
+However, for ingress traffic it is a bit a different story. That the ingress bandwidth is lower than the egress bandwidth is expected, because there is a slight overhead by redirecting ingress traffic from a physical interface to a virtual interface. So having a situation like we have it with a buffer length of 1000 kilo bytes would be desirable. However, we can't ignore that by increasing the buffer length, the ingress bandwidth drops quite drastically. For getting on the bottom of this issue, let us consider figure \ref{Evaluation of the Bandwidth Drops}. This figure shows the number of samples at a bandwidth of zero depending on the length of the buffer. It is visible that the bigger the buffer, the more the ingress traffic suffers from samples with zero bandwidth. This phenomenon happens with egress traffic as well, but it is much less significant. The increasing number of zero bandwidth samples shows that the decreased average bandwidth is not caused by a wrong limitation, since the samples that make it through are received at a bandwidth that is around the desired limit, but that for some samples either iPerf3 fails to do a measurement at all or something causes the machine to receive data for some time. To figure out whether these anomalies are the result of side effects the \textit{scionlab\_bw\_limiter} causes or are measurement errors of iPerf3, we need compare these results to results we get if we enforce bandwidth limits using a different tool.
 
 \begin{figure}[h]
 	\centering
@@ -65,7 +67,8 @@ Figure \ref{Evaluation of the Bandwidth} shows the average bandwidth over ten sa
 	\label{Evaluation of the Bandwidth Drops}
 \end{figure}
 
-
+\subsection{Comparison with Wondershaper}
+%TODO do testing with wondershaper and compare
 
 %Note: 
 %Ingress test: iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
