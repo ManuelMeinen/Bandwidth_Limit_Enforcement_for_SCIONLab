@@ -18,7 +18,7 @@ I decided to simply generate a file of a certain size, send it either from the s
 
 \subsection{Using iPerf3}
 
-Since the naive approach turned out to be to inaccurate to be of any use, I decided to set up an iPerf3 test environment. I installed iPerf3 on both the test client as well as on the test server and let the test server run iPerf3 as a server. Note that the same software is used for both the server side as well as the client side. They just run in different modes. On the client I can now connect to the test server and run highly customisable tests with the server. Normally the server is the one sending data to the client, but iPerf3 can be run in a reverse mode (using the \textit{-R} option), such that we can test both ingress as well as egress traffic without having to switch between client and server mode on our machines.
+Since the naive approach turned out to be to inaccurate to be of any use, I decided to set up an iPerf3 test environment. I installed iPerf3 on both the test client as well as on the test server and let the test server run iPerf3 as a server. Note that the same software is used for both the server side as well as the client side. They just run in different modes. On the client I can now connect to the test server and run highly customisable tests with the server. Normally the client is the one sending data to the server, but iPerf3 can be run in a reverse mode (using the \textit{-R} option), such that we can test both ingress as well as egress traffic without having to switch between client and server mode on our machines.
 
 \section{iPerf3}
 
@@ -27,6 +27,21 @@ iPerf3 is a state of the art network performance measurement tool. It is a succe
 iPerf3 can test both \ac{TCP} as well as \acs{UDP} traffic. In our case we only need to test \acs{UDP} traffic. This can be done by passing the option \textit{-u} as an argument to iPerf3. When running it we need to specify a target bandwidth (option \textit{-b}). iPerf3 then tries to achieve this bandwidth by sending traffic out at this rate. To run iPerf3 in server mode we only have to pass \textit{-s} as an argument. For running it in the client mode we have to analogously pass the \textit{-c} option followed by the server's \acs{IP}-address. Last but not least, we can optionally set the buffer length of the buffer from which is sent and to which is received by passing the option \textit{-l} followed by a size in kilo bytes as an argument. As we will see in section \ref{Test Results}, this option is of quite a significance.
 
 \section{Test Results}\label{Test Results}
+
+\begin{lstlisting}[language=sh, caption = Test Server Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Test Server Command]
+iperf3 -s
+\end{lstlisting}
+
+\begin{lstlisting}[language=sh, caption = Ingress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Ingress Test Command]
+iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
+\end{lstlisting}
+
+\begin{lstlisting}[language=sh, caption = Egress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Egress Test Command]
+iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000
+\end{lstlisting}
+
+
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Evaluation-Bandwidth.png}
@@ -37,7 +52,7 @@ iPerf3 can test both \ac{TCP} as well as \acs{UDP} traffic. In our case we only 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Evaluation-Zeros.png}
-	\caption{Evaluation of the Bandwidth Drops}
+	\caption{Evaluation of Bandwidth Drops}
 	\label{Evaluation of the Bandwidth Drops}
 \end{figure}
 
