@@ -28,19 +28,28 @@ iPerf3 can test both \ac{TCP} as well as \acs{UDP} traffic. In our case we only 
 
 \section{Test Results}\label{Test Results}
 
+The following test results occurred under the following configuration:
+\\
+The server's \acs{IP}-address is in our case 192.168.17.129, the \acs{IP}-connection to the server is limited to 500Kbps and the default bandwidth is 1000Kbps. The \ac{MTU} parameter in \acs{TC} is set to the \acs{MTU} of the network interface that is used to connect to the specific \acs{IP}-address. In our case this is 1500 bytes. The burst parameter, which is the size of the bucket in the \acs{TBF} algorithm is set to 5K. The ceil rate is the same as the normal rate, which is 500Kbps to the test server and 1000Kbps to any other \acs{IP}-device that uses the same interface.
+\\
+\\
+On the test server, we start iPerf3 using no other options than the \textit{-s} option, that makes iPerf3 run in server mode (see listing \ref{Test Server Command}). On the client side, we configure a bit more. We set the \textit{-u} option, in order to generate \acs{UDP} traffic as test traffic. The target bandwidth is set to 2Mbps (option \textit{-b}) and the only parameter that we are going to change for different tests is the buffer length (option \textit{-l}). We start at a buffer length of 1000 kilo bytes and go up to 10000 kilo bytes. And finally we set the \textit{-R} in case we want to run the test in reverse mode, meaning that we test with ingress traffic. Listings \ref{Example Egress Test Command} and \ref{Example Ingress Test Command} show what these commands look like. Note that if we set the buffer size too small, we encounter an error. This happens because the packets arrive in a different order than they arrived in. Therefore iPerf3 can't measure the bandwidth any more. This phenomenon is discussed on \href{https://github.com/esnet/iperf/issues/457}{github.com}\cite{mah2016iperfIssue} in the issues section of the iPerf source code.
+
 \begin{lstlisting}[language=sh, caption = Test Server Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Test Server Command]
 iperf3 -s
 \end{lstlisting}
-
-\begin{lstlisting}[language=sh, caption = Ingress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Ingress Test Command]
-iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
-\end{lstlisting}
-
-\begin{lstlisting}[language=sh, caption = Egress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Egress Test Command]
+\newpage
+\begin{lstlisting}[language=sh, caption = Example Egress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Example Egress Test Command]
 iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000
 \end{lstlisting}
 
+\begin{lstlisting}[language=sh, caption = Example Ingress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Example Ingress Test Command]
+iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
+\end{lstlisting}
 
+\subsection{Interpretation of the Test Results}
+
+Figure \ref{Evaluation of the Bandwidth} shows the average bandwidth over ten samples for both ingress as well as egress traffic with respect to the buffer size.
 
 \begin{figure}[h]
 	\centering
@@ -56,11 +65,6 @@ iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000
 	\label{Evaluation of the Bandwidth Drops}
 \end{figure}
 
-\subsection{Egress Traffic}
-
-
-
-\subsection{Ingress Traffic}
 
 
 %Note: 
