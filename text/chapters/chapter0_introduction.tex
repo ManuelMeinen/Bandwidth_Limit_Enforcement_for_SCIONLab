@@ -1,1 +1,29 @@
-\chapter*{Introduction}
+\chapter{Introduction}
+
+\section{Problems of the Current Internet}
+Today's society is heavily dependant on the internet and therefore also on it's underlying architecture. However, protocols like \ac{IP} and \ac{BGP} were not designed to withstand the threads that the internet is facing today. To address this issue, a research group around Prof. Adrian Perrig invented a novel internet architecture named \acs{SCION}, which stands for \textit{Scalability, Control and Isolation on Next-Generation Networks}.
+
+\section{What is SCION?}
+
+\section{What is SCIONLab?}
+
+For \acp{ISP}, research institutions or in general administrators of \acp{AS} to test out \acs{SCION}, the Network Security Group of \acs{ETH} Zurich manages a distributed testbed called \acs{SCIONLab}. Customers of \acs{SCIONLab} can customize and download the configuration for setting up a \acs{SCION}-\ac{AS}. This \acs{SCION}-\ac{AS} connects then to one of \acs{ETH}'s \aclp{AP} and can therefore communicate  via the \acs{SCIONLab} infrastructure.
+
+\section{Goal of this Bachelor Thesis Project}
+
+At the moment there are no bandwidth limitations in place other than the physical ones, meaning that neither the \acs{SCIONLab} administrators nor the customers can set any upper limits for the bandwidth they have available between the User-\acs{AS} and the \acs{SCIONLab} infrastructure. However, such an upper limit is desirable for both customers and \acs{ETH} for different reasons. Customers might want to test out the behaviour of a certain \acs{SCION} based application when having limited bandwidth available. And \acs{ETH}, which pays for the bandwidth \acs{SCIONLab} is using, has an interest in enforcing an upper bandwidth limit to gain control over the expenses they have.
+\\
+Since \acs{SCIONLab} is an overlay network, meaning that whatever looks like a physical link from the perspective of a \acs{SCIONLab}-\acs{AS} is in fact a connection over the traditional \acs{IP} based internet, bandwidth limitations per link can be enforced on an \acs{IP}-level using existing tools.
+\\
+The goal of this bachelor thesis project is to design and implement an automated mechanism to enforce a per \acs{IP}-connection bandwidth limit between the User-\acsp{AS} and the \aclp{AP} of \acs{SCIONLab}. This is realized by using a tool called \ac{TC}, which is part of the iproute2 utility collection.
+
+%Today's society is heavily dependant on the internet and therefore also on it's underlying architecture. However, protocols like \ac{IP} and \ac{BGP} were not designed to withstand the threads that the internet is facing today. To address this issue, a research group around Prof. Adrian Perrig invented a novel internet architecture named \acs{SCION}, which stands for \textit{Scalability, Control and Isolation on Next-Generation Networks}.
+%\\
+%For \acp{ISP}, research institutions or in general administrators of \acp{AS} to test out \acs{SCION}, the Network Security Group of \acs{ETH} Zurich manages a distributed testbed called \acs{SCIONLab}. Customers of \acs{SCIONLab} can customize and download the configuration for setting up a \acs{SCION}-\ac{AS}. This \acs{SCION}-\ac{AS} connects then to one of \acs{ETH}'s \aclp{AP} and can therefore communicate  via the \acs{SCIONLab} infrastructure.
+%\\
+%At the moment there are no bandwidth limitations in place other than the physical ones, meaning that neither the \acs{SCIONLab} administrators nor the customers can set any upper limits for the bandwidth they have available between the User-\acs{AS} and the \acs{SCIONLab} infrastructure. However, such an upper limit is desirable for both customers and \acs{ETH} for different reasons. Customers might want to test out the behaviour of a certain \acs{SCION} based application when having limited bandwidth available. And \acs{ETH}, which pays for the bandwidth \acs{SCIONLab} is using, has an interest in enforcing an upper bandwidth limit to gain control over the expenses they have.
+%\\
+%Since \acs{SCIONLab} is an overlay network, meaning that whatever looks like a physical link from the perspective of a \acs{SCIONLab}-\acs{AS} is in fact a connection over the traditional \acs{IP} based internet, bandwidth limitations per link can be enforced on an \acs{IP}-level using existing tools.
+%\\
+%The goal of this bachelor thesis project is to design and implement an automated mechanism to enforce a per \acs{IP}-connection bandwidth limit between the User-\acsp{AS} and the \aclp{AP} of \acs{SCIONLab}. This is realized by using a tool called \ac{TC}, which is part of the iproute2 utility collection.
+
