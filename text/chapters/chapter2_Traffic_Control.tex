@@ -11,7 +11,7 @@ Traffic control in Linux is realized using a tool named \acs{TC}. It consists of
 \item \textbf{Dropping}: This is a quite primitive approach of just dropping traffic that exceeds a given bandwidth. This is applicable for both ingress and egress traffic.
 \end{enumerate}
 
-For our needs, traffic shaping fits best. But since we need to limit ingress traffic as well, and shaping only operates on egress traffic, we need a workaround. More about that in section  \ref{Ingress Traffic}. Traffic control using \acs{TC} is implemented using three basic building blocks: \acp{QDISC}, classes and filters. They will be discussed in section \ref{TC}.
+For our needs, traffic shaping fits best. But since we need to limit ingress traffic as well, and shaping only operates on egress traffic, we need a workaround. More about that in section  \ref{Ingress Traffic}. \acl{TC} in Linux is implemented using three basic building blocks: \acp{QDISC}, classes and filters. They will be discussed in section \ref{TC}.
 
 \section{Theory}
 \subsection{Traffic Shaping}
@@ -19,12 +19,12 @@ As previously stated, traffic shaping happens with egress traffic. However, ther
 
 \subsection{Egress Traffic}
 To enforce a bandwidth limit per \acs{IP} connection it makes sense to use a classful \acs{QDISC}, because this provides us with the flexibility to configure the classes exactly according to our needs. The best choice for a classful egress \acs{QDISC} that allows us to enforce bandwidth limits, seems to be an \ac{HTB}-\acs{QDISC}, which is based on the \ac{TBF} shaping algorithm. The \acs{TBF} algorithm roughly works as follows: 
-\\There is a bucket that holds tokens. Every token corresponds to approximately one byte. Whenever a packet arrives, the \acs{TBF} algorithm tries to consume as many tokens out of the token bucket as there are bytes in the packet. If there are enough tokens, then the packet can be sent at full speed. If there are not enough tokens, then the packet gets enqueued and has to wait until there are again enough tokens in the bucket. The bucket is constantly being filled with tokens at the rate we configured. Like this the bandwidth can be limited in average and at the same time allow short bursts at maximum speed, where the size of these bursts depends on the size of the bucket. It is worth noticing, that the limitation looses in accuracy if the limit is above 1mbit/s. But the accuracy loss shouldn't be too severe for our use-case.
+\\There is a bucket that holds tokens. Every token corresponds to approximately one byte. Whenever a packet arrives, the \acs{TBF} algorithm tries to consume as many tokens out of the token bucket as there are bytes in the packet. If there are enough tokens, then the packet can be sent at full speed. If there are not enough tokens, then the packet gets enqueued and has to wait until there are again enough tokens in the bucket. The bucket is constantly being filled with tokens at the rate we configured. Like this the bandwidth can be limited in average and at the same time allow short bursts at maximum speed, where the size of these bursts depends on the size of the bucket. It is worth noticing, that the limitation looses in accuracy if the limit is above 1Mbps. But the accuracy loss shouldn't be too severe for our use-case.
 More about the \acs{HTB}-\acs{QDISC} can be found in section 9.5.5. of \textit{Linux advanced routing \& traffic control HOWTO}\cite{hubert2002linux}.
 
 \newpage
 \subsection{Ingress Traffic} \label{Ingress Traffic}
-There is only one \acs{QDISC} that can handle ingress traffic, namely the ingress \acs{QDISC}, which is classless. Since it is classless we can't do traffic shaping per \acs{IP} connection as easily as we do it with egress traffic. Therefore we are left with two options:
+There is only one \acs{QDISC} that can handle ingress traffic, namely the \textit{ingress} \acs{QDISC}, which is classless. Since it is classless we can't do traffic shaping per \acs{IP} connection as easily as we do it with egress traffic. Therefore we are left with two options:
 \begin{enumerate}
 \item \textbf{Traffic policing using filters}:
 \\With this option we can only use the configuration options \acs{TC}-filters provide. The filters would be directly attached to the ingress \acs{QDISC}. Since these policing options are a bit limited and not as powerful as the shaping options, we are not going to use policing.
@@ -55,6 +55,6 @@ Classes are used to configure classful \acsp{QDISC}. They are mostly used to han
 \subsection{Filters}
 There are two main types of filters:
 \begin{enumerate}
-\item \textbf{Classifiers:} They map traffic based on some metric to a class of a classful \acs{QDISC}, where the traffic is then further handled according to the leaf \acs{QDISC}.
-\item \textbf{Policers:} They are used to directly manipulate traffic. In our case we use them to redirect traffic from the ingress \acs{QDISC} to a virtual interface. But they can also be used to directly limit the bandwidth, however without the configuration options a classful \acs{QDISC} provides.
+\item \textbf{Classifiers:} They map traffic based on some metric to a class of a classful \acs{QDISC}, where the traffic is then further handled according to the leaf \acs{QDISC} or filters attached to the class.
+\item \textbf{Policers:} They are used to directly manipulate traffic. In our case we use them to redirect traffic from the ingress \acs{QDISC} to a virtual interface (\ac{IFB}). But they can also be used to directly limit the bandwidth, however without the configuration options a classful \acs{QDISC} provides.
 \end{enumerate}
