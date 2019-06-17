@@ -39,12 +39,12 @@ The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCION
 \end{figure}
 
 \subsection{Attachment Point Configuration}
-On the \aclp{AP} there will be a python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
+On the \aclp{AP} there will be a Python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
 %TODO figure out how to do that...
 
 \section{Back End}
 
-The back end consists mainly of the python files listed below. Additionally there are some \acs{JSON}-files that are used to either safe some settings or store some text that would take up too much space in the code and is therefore put into a separate file for the sake of readability. The python files have the following functionality:
+The back end consists mainly of the Python files listed below. Additionally there are some \acs{JSON}-files that are used to either safe some settings or store some text that would take up too much space in the code and is therefore put into a separate file for the sake of readability. The Python files have the following functionality:
 
 \begin{enumerate}
 \item[$\bullet$]\textit{scionlab\_bw\_limiter}:

@@ -1,1 +1,18 @@
 \chapter{Conclusion}
+\section{Front End}
+
+Implementing the front end was the easiest part of the entire project. For that, I stuck mostly to the current practices and implemented the mechanisms that were additionally used for this project in a manner that is very similar to the mechanisms that were already in place. The intention of this approach was to make maintainability as easy as possible, especially since the \acs{SCIONLab} server is still in development. I also made sure that the code that I contributed was well documented and easy to read.
+
+\section{Back End}
+
+Designing and implementing the \textit{scionlab\_bw\_limiter} was definitely the part of the project that required the most research. Understanding and configuring \acs{TC} turned out to be harder than expected. Furthermore it is quite unfortunately that there isn't really a reasonable \acs{API} that let's us configure \acs{TC} from within Python. Therefore I had to write my own wrapper for \acs{TC}. But I think that the implementation of the \textit{scionlab\_bw\_limiter} works quite well and is also easily understandable. The results the \textit{scionlab\_bw\_limiter} delivers are not perfect, but still satisfiable, especially since there is not really a tool out there (of which I know) that performs better. Especially the results for ingress traffic were not as good as I hoped they would be. But there it is also questionable on whether the measurements of iPerf3 were accurate or not. At least I showed that the quite established bandwidth limiter \textit{wondershaper} behaves similarly.
+
+\section{Difficulties that Arouse}
+
+The biggest challenge I was facing, was enforcing a bandwidth limit on ingress traffic. \acs{TC} was mainly designed to do traffic shaping in order to improve the quality of service. For improving the quality of service, egress traffic is much more relevant than ingress traffic. Therefore \acs{TC} is not as advanced when it comes to handling ingress traffic as I wished it would be.
+\\
+Furthermore, testing turned out to be quite difficult as well. It's not easy to create a realistic test environment, which is still simple enough such that test results can be interpreted in a meaningful way. If test results turn out differently than expected, it is often not clear whether the measurement was wrong, the test configuration was faulty, the test environment was unrealistic or the implementation was buggy. It might as well just be that the testing tool is limited in it's measurement capabilities. 
+
+\section{Lessons Learned}
+
+This bachelor thesis project offered me the opportunity to gain a deep understanding of how \acs{IP} traffic can be managed in order to enforce a bandwidth limit and what possible complications and consequences there can be. It also provided me with a holistic view over \acs{SCION}, \acs{SCIONLab} and in general how a novel internet architecture can be tested in a distributed testbed. It also gave me a better understanding of how Linux tools work that are used for networking purposes. Last but not least, it again showed me the importance of extensive testing and how hard it is to have an accurate and easy to use testing tool.
