@@ -51,7 +51,7 @@ iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
 
 Figure \ref{Evaluation of the Bandwidth} shows the average bandwidth over ten samples for both ingress as well as egress traffic with respect to the buffer size. For the egress traffic the results look quite good. The average egress bandwidth lies slightly above the bandwidth limit. This is because we allow short bursts at a higher speed. Therefore, the limitations on egress traffic can be considered as effective and stable.
 \\
-However, for ingress traffic it is a bit a different story. That the ingress bandwidth is lower than the egress bandwidth is expected, because there is a slight overhead by redirecting ingress traffic from a physical interface to a virtual interface. So having a situation like we have it with a buffer length of 1000 kilo bytes would be desirable. However, we can't ignore that by increasing the buffer length, the ingress bandwidth drops quite drastically. For getting on the bottom of this issue, let us consider figure \ref{Evaluation of the Bandwidth Drops}. This figure shows the number of samples at a bandwidth of zero depending on the length of the buffer. It is visible that the bigger the buffer, the more the ingress traffic suffers from samples with zero bandwidth. This phenomenon happens with egress traffic as well, but it is much less significant. The increasing number of zero bandwidth samples shows that the decreased average bandwidth is not caused by a wrong limitation, since the samples that make it through are received at a bandwidth that is around the desired limit, but that for some samples either iPerf3 fails to do a measurement at all or something causes the machine to receive data for some time. To figure out whether these anomalies are the result of side effects the \textit{scionlab\_bw\_limiter} causes or are measurement errors of iPerf3, we need compare these results to results we get if we enforce bandwidth limits using a different tool.
+However, for ingress traffic it is a bit a different story. That the ingress bandwidth is lower than the egress bandwidth is expected, because there is a slight overhead by redirecting ingress traffic from a physical interface to a virtual interface. So having a situation like we have it with a buffer length of 1000 kilo bytes would be desirable. However, we can't ignore that by increasing the buffer length, the ingress bandwidth drops quite drastically. For getting on the bottom of this issue, let us consider figure \ref{Evaluation of the Bandwidth Drops}. This figure shows the number of samples at a bandwidth of zero depending on the length of the buffer. It is visible that the bigger the buffer, the more the ingress traffic suffers from samples with zero bandwidth. This phenomenon happens with egress traffic as well, but it is much less significant. The increasing number of zero bandwidth samples shows that the decreased average bandwidth is not caused by a wrong limitation, since the samples that make it through are received at a bandwidth that is around the desired limit, but that for some samples either iPerf3 fails to do a measurement at all or something prevents the machine from receiving data for some time. To figure out whether these anomalies are the result of side effects the \textit{scionlab\_bw\_limiter} causes or are measurement errors of iPerf3, we need compare these results to results we get if we enforce bandwidth limits using a different tool.
 
 \begin{figure}[h]
 	\centering
@@ -66,10 +66,20 @@ However, for ingress traffic it is a bit a different story. That the ingress ban
 	\caption{Evaluation of Bandwidth Drops}
 	\label{Evaluation of the Bandwidth Drops}
 \end{figure}
-
+%TODO maybe there is a better solution to layout that stuff...
+\newpage
+\textit{ }
+\newpage
 \subsection{Comparison with Wondershaper}
-%TODO do testing with wondershaper and compare
 
+\textit{Wondershaper} is an open-source program that has been developed by some of the major contributors of the \textit{Linux advanced routing \& traffic control HOWTO}\cite
+{hubert2002linux}. The code of \textit{wondershaper} can be found on \href{https://github.com/magnific0/wondershaper}{github.com}\cite{hubert2002wondershaper}. \textit{Wondershaper} only allows the user to enforce a general bandwidth limit and not individual bandwidth limits per \acs{IP}-address. On the other hand it allows us to set an ingress bandwidth that is different from the egress bandwidth. But since we don't require that we just set the same bandwidth limits in both cases on the interface that is used to connect to the test server. Listing \ref{Wondershaper command} shows the command that has been used in order to enforce a bandwidth limit of 500Kbps on interface \textit{ens33}.
+
+\begin{lstlisting}[language=sh, caption = Wondershaper command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Wondershaper command]
+sudo ./wondershaper -a ens33 -u 500 -d 500
+\end{lstlisting}
+
+As we can se in Figure \ref{Evaluation of the Bandwidth (Wondershaper)} and \ref{Evaluation of the Bandwidth Drops (Wondershaper)} the same phenomenon occurs if we enforce a bandwidth limit with \textit{wondershaper} and run the exact same tests as before. It is worth noticing that even though the test results for ingress traffic look similarly bad yet quite different from the results from the \textit{scionlab\_bw\_limiter} both \textit{wondershaper} as well as the \textit{scionlab\_bw\_limiter} use the \ac{IFB} interfaces and the \textit{ingress} \acs{QDISC} and are therefore implemented almost equivalently. The egress bandwidth limits however are implemented quite differently even though the test results look almost the same. When it comes to egress traffic, \textit{wondershaper} distinguishes between different types of service, in order to achieve a better quality of service. In our case this is not necessary, since we are not dealing with average "every day traffic", but only with \acs{SCION} traffic that is wrapped into \acs{IP} packets.  
 
 \begin{figure}[h]
 	\centering
