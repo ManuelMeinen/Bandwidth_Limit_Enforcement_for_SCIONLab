@@ -5,7 +5,7 @@ Today's society is heavily dependant on the internet and therefore also on it's 
 
 \section{What is SCION?}
 
-\acs{SCION} is a clean-slate network architecture. It provides route control, failure isolation and explicit trust information for end-to-end communication\cite{scion2019website}. It is designed to replace both \acs{IP} and \acs{BGP}.
+\acs{SCION} is a clean-slate network architecture. It provides route control, failure isolation and explicit trust information for end-to-end communication\cite{scion2019website}. It is designed to replace both \acs{IP} and \acs{BGP}. 
 
 \section{What is SCIONLab?}
 
@@ -13,7 +13,7 @@ For \acp{ISP}, research institutions or in general administrators of \acp{AS} to
 
 \section{Goal of this Bachelor Thesis Project}
 
-At the moment there are no bandwidth limitations in place other than the physical ones, meaning that neither the \acs{SCIONLab} administrators nor the customers can set any upper limits for the bandwidth they have available between the User-\acs{AS} and the \acs{SCIONLab} infrastructure. However, such an upper limit is desirable for both customers and \acs{ETH} for different reasons. Customers might want to test out the behaviour of a certain \acs{SCION} based application when having limited bandwidth available. And \acs{ETH}, which pays for the bandwidth \acs{SCIONLab} is using, has an interest in enforcing an upper bandwidth limit to gain control over the expenses they have.
+At the moment, on \acs{SCIONLab}, there are no bandwidth limitations in place other than the physical ones, meaning that neither the \acs{SCIONLab} administrators nor the customers can set any upper limits for the bandwidth they have available between the User-\acs{AS} and the \acs{SCIONLab} infrastructure. However, such an upper limit is desirable for both customers and \acs{ETH} for different reasons. Customers might want to test out the behaviour of a certain \acs{SCION} based application when having limited bandwidth available. And \acs{ETH}, which pays for the bandwidth \acs{SCIONLab} is using, has an interest in enforcing an upper bandwidth limit to gain control over the expenses they have.
 \\
 Since \acs{SCIONLab} is an overlay network, meaning that whatever looks like a physical link from the perspective of a \acs{SCIONLab}-\acs{AS} is in fact a connection over the traditional \acs{IP} based internet, bandwidth limitations per link can be enforced on an \acs{IP}-level using existing tools.
 \\
