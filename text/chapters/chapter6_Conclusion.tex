@@ -7,7 +7,7 @@ Implementing the front end was the easiest part of the entire project. For that,
 
 Designing and implementing the \textit{scionlab\_bw\_limiter} was definitely the part of the project that required the most research. Understanding and configuring \acs{TC} turned out to be harder than expected. Furthermore it is quite unfortunate that there isn't really a reasonable \acs{API} that let's us configure \acs{TC} using Python. Therefore I had to write my own wrapper for \acs{TC}. But I think that the implementation of the \textit{scionlab\_bw\_limiter} works quite well and is also easy to understand. The results the \textit{scionlab\_bw\_limiter} delivers are not perfect, but still satisfiable, especially since there is not really a tool out there (of which I know) that performs better. In particular the results for ingress traffic were not as good as I hoped they would be. But there it is also questionable on whether the measurements of iPerf3 were accurate or not. At least I showed that the quite established bandwidth limiter \textit{wondershaper} behaves similarly.
 
-\section{Difficulties that Arouse}
+\section{Difficulties that Arose}
 
 The biggest challenge I was facing, was enforcing a bandwidth limit on ingress traffic. \acs{TC} was mainly designed to do traffic shaping in order to improve the quality of service. For improving the quality of service, egress traffic is much more relevant than ingress traffic. Therefore \acs{TC} is not as advanced, when it comes to handling ingress traffic, as I wished it would be.
 \\
