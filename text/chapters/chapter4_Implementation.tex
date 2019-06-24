@@ -29,7 +29,7 @@ In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, 
 
 \subsection{The Data Model}
 
-The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCIONLab}'s data model is based on Django's data model as showed in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
+The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCIONLab}'s data model is based on Django's data model as shown in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
 
 \begin{figure}[H]
 	\centering
@@ -39,12 +39,13 @@ The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCION
 \end{figure}
 
 \subsection{Attachment Point Configuration}
+
 On the \aclp{AP} there will be a Python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
 %TODO figure out how to do that...
 
 \section{Back End}
 
-The back end consists mainly of the Python files listed below. Additionally there are some \acs{JSON}-files that are used to either safe some settings or store some text that would take up too much space in the code and is therefore put into a separate file for the sake of readability. The Python files have the following functionality:
+The back end consists mainly of the Python files listed below. Additionally there are some \acs{JSON}-files that are used to either safe some settings or store some text that would take up too much space in the code and is therefore put into a separate file for the sake of readability. The Python files have the following functionalities:
 
 \begin{enumerate}
 \item[$\bullet$]\textit{scionlab\_bw\_limiter}:
@@ -65,7 +66,7 @@ This file contains the implementation of the \textit{limit()}, \textit{reset()} 
 
 \item[$\bullet$]\textit{code\_base/cmd\_executor.py}:
 \\
-The command executor implements some static helper functions, that simplify running a command on the command line. One function silently runs a command using the subprocess \acs{API}, an other one runs a command and prints it to the console, one runs the command silently but returns the output it received by running the command and finally one function runs a command after it printed it and returns the output.
+The command executor implements some static helper functions, that simplify running a command on the command line. One function silently runs a command using the subprocess \acs{API}, an other one runs a command and prints it to the console, one runs the command silently but returns the output it received by running the command and finally one function runs a command after printing it and returns the output.
 
 \item[$\bullet$]\textit{code\_base/constants.py}:
 \\
@@ -77,7 +78,7 @@ This file is used to retrieve information about the interfaces configured on the
 
 \item[$\bullet$]\textit{code\_base/links.py}:
 \\
-Analogously to the \textit{interfaces.py} file the \textit{links.py} file is used to bundle together information about links. This information is parsed form the \textit{link\_info.json} file. Furthermore, in this file the virtual interfaces are set up and mapped to their corresponding physical counterpart.
+Analogously to the \textit{interfaces.py} file, the \textit{links.py} file is used to bundle together information about links. This information is parsed form the \textit{link\_info.json} file. Furthermore, in this file, the virtual interfaces are set up and mapped to their corresponding physical counterpart.
 
 \item[$\bullet$]\textit{code\_base/systeminfo.py}:
 \\
@@ -93,7 +94,7 @@ This file is the centrepiece of the entire program. It defines the building bloc
 
 \item[$\bullet$]\textit{code\_base/virtual\_interfaces\_manager.py}:
 \\
-The virtual interface manager is used to set up and delete the virtual interface and to map them to their physical counterparts.
+The virtual interface manager is used to set up and delete the virtual interfaces and to map them to their physical counterparts.
 
 \end{enumerate}
 
