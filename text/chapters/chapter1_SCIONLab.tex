@@ -9,7 +9,7 @@ Since \acs{SCION} is an internet architecture it is designed to replace both \ac
 Path construction in \acs{SCION} happens in two phases, the path exploration phase and the path registration phase. In the path exploration phase the core-\acsp{AS} send out \acp{PCB}. The \acsp{AS} can then decide to whom they want to forward the \acsp{PCB}. Each \acs{AS} can then decide over which paths they want to be reachable and register these paths in the path servers of the core-\acsp{AS}. These processes happen both within an \acs{ISD} as well as across \acsp{ISD}. The final path is then constructed out of three partial paths, an up-path, a down-path and a core path. How this final path is constructed is up to the \acs{AS} itself, which gives it control over the path a certain package takes to reach it's destination. For further details I recommend reading chapter 7 of \textit{SCION: A Secure Internet Architecture} \cite{perrig2017scion}
 
 \subsection{Data Plane}
-%TODO Check if lookup process is correct...
+
 The data plane consists mainly of path combination and data forwarding. Each \acs{AS} possesses multiple up-paths. The down-paths are registered in the path servers of the core-\acsp{AS} of the destination's \acs{ISD} and can be requested by any \acs{AS}. The core paths are stored in the path servers of the core-\acsp{AS}. Therefore to get the possible paths to reach a destination \acs{AS}, the source \acs{AS} chooses an up-path to reach one of its core-\acsp{AS} and requests the paths to one of the destination's \acs{ISD}'s core-\acsp{AS}. Then it contacts the destination's core-\acs{AS} to request the down-paths to the destination \acs{AS}. Out of these three path segments the source \acs{AS} can then construct the final path. By doing so it can also take short cuts over peering-links or if the destination \acs{AS} lies on the up-path then it doesn't even need to contact any core-\acs{AS}.
 \\
 More details on how paths can be combined can be found in chapter 8 of the \acs{SCION}-book \cite{perrig2017scion}
@@ -50,6 +50,7 @@ There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one
 
 \begin{figure}[h]
 	\centering
+	%TODO update image to current version
 	\includegraphics[width=\textwidth]{img/SCIONLab_Coordination_Service.png}
 	\caption{Web Interface of the SCIONLab Coordination Service }
 	\label{SCIONLab Coordination Service}
