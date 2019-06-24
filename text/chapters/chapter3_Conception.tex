@@ -19,7 +19,7 @@ The \acs{SCIONLab} server regularly generates files according to its data model 
 
 \section{Back End}
 
-The back end part is all about configuring the \acsp{AP} in a way that the bandwidth limits that are specified in the \textit{link\_info.json} file are put into effect. We do that using the \acs{TC} tool. However, there is no \acs{API} to use \acs{TC} in an automated way. Therefore we need to write a wrapper program that configures \acs{TC} via the command line. This wrapper program is written in Python and is available on \href{https://github.com/ManuelMeinen/SCIONLab_Bandwidth_Limiter}{github.com}\cite{meinen2019scionlabBwLimiter}. Further details on how this program is implemented can be found in chapter \ref{Implementation}.
+The back end part is all about configuring the \acsp{AP} in a way that the bandwidth limits that are specified in the \textit{link\_info.json} file are put into effect. We do that using the \acs{TC} utility. However, there is no \acs{API} to use \acs{TC} in an automated way. Therefore we need to write a wrapper program that configures \acs{TC} via the command line. This wrapper program is written in Python and is available on \href{https://github.com/ManuelMeinen/SCIONLab_Bandwidth_Limiter}{github.com}\cite{meinen2019scionlabBwLimiter}. Further details on how this program is implemented can be found in chapter \ref{Implementation}.
 \\
 Furthermore, we have to make some design decisions. Especially, we have to decide on how to build up the \acs{TC} logic. Figure \ref{QDISC-Set-up} shows in an abstract way how \acsp{QDISC}, classes and filters are set up on both physical as well as virtual interfaces and how they are related.
 \\
