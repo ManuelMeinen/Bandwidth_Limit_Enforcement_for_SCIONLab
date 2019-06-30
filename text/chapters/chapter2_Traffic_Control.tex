@@ -11,7 +11,7 @@ Traffic control in Linux is realized using a utility named \acs{TC}. It consists
 \item \textbf{Dropping}: This is a quite primitive approach of just dropping traffic that exceeds a given bandwidth. This is applicable for both ingress and egress traffic.
 \end{enumerate}
 
-For our needs, traffic shaping fits best. But since we need to limit ingress traffic as well, and shaping only operates on egress traffic, we need a workaround. More about that in section  \ref{Ingress Traffic}. \acl{TC} in Linux is implemented using three basic building blocks: \acp{QDISC}, classes and filters. They will be discussed in section \ref{TC}.
+For our needs, traffic shaping fits best. But since we need to limit ingress traffic as well, and shaping only operates on egress traffic, we need a workaround. More about that in section  \ref{Ingress Traffic}. \acl{TC} on Linux is implemented using three basic building blocks: \acp{QDISC}, classes and filters. They will be discussed in section \ref{TC}.
 
 \newpage
 \section{TC} \label{TC}
@@ -39,7 +39,6 @@ There are two main types of filters:
 As previously stated, traffic shaping happens with egress traffic. However, there is a special \acs{QDISC} that is handling ingress traffic. Since this \acs{QDISC} is the only one applicable on ingress traffic, it is called \textit{ingress}. The term \acl{QDISC}, in that case, is a bit misleading, because there is no such thing as an ingress queue. All the other \acsp{QDISC} handle egress traffic and are quite diverse. Each \acs{QDISC} has a shaping algorithm that shapes the traffic passing the corresponding \acs{QDISC}. \acsp{QDISC} can be either classful or classless (the ingress \acs{QDISC} is the latter). Classful \acsp{QDISC} have a shaping algorithm that can handle traffic, which is classified in different classes, differently. Both the classes and the classifiers, which are filters that determine which kind of traffic belongs to which class, are attached to the \acs{QDISC}. Classless \acsp{QDISC} can obviously not handle classes. However they can handle filters, which can either do policing on the traffic or i.e. redirect it to a different interface.
 
 \subsection{Egress Traffic}
-%TODO check if it fits after restructuring
 To enforce a bandwidth limit per \acs{IP} connection it makes sense to use a classful \acs{QDISC}, because this provides us with the flexibility to configure the classes exactly according to our needs. The best choice for a classful egress \acs{QDISC} that allows us to enforce bandwidth limits, seems to be an \ac{HTB}-\acs{QDISC}, which is based on the \ac{TBF} shaping algorithm. The \acs{TBF} algorithm roughly works as follows: 
 \\There is a bucket that holds tokens. Every token corresponds to approximately one byte. Whenever a packet arrives, the \acs{TBF} algorithm tries to consume as many tokens out of the token bucket as there are bytes in the packet. If there are enough tokens, then the packet can be sent at full speed. If there are not enough tokens, then the packet gets enqueued and has to wait until there are again enough tokens in the bucket. The bucket is constantly being filled with tokens at the rate we configured. Like this the bandwidth can be limited in average and at the same time allow short bursts at maximum speed, where the size of these bursts depends on the size of the bucket. It is worth noticing, that the limitation looses in accuracy if the limit is above 1Mbps. But the accuracy loss shouldn't be too severe for our use-case.
 More about the \acs{HTB}-\acs{QDISC} can be found in section 9.5.5. of \textit{Linux advanced routing \& traffic control HOWTO}\cite{hubert2002linux}.
@@ -51,13 +50,13 @@ There is only one \acs{QDISC} that can handle ingress traffic, namely the \texti
 \item \textbf{Traffic policing using filters}:
 \\With this option we can only use the configuration options \acs{TC}-filters provide. The filters would be directly attached to the ingress \acs{QDISC}. Since these policing options are a bit limited and not as powerful as the shaping options, we are not going to use policing.
 \item \textbf{Traffic shaping using virtual interfaces}:
-\\The option of using virtual interfaces gives us the same configuration possibilities as we have with egress traffic. At the ingress \acs{QDISC} we simply attach one filter that redirects all the traffic it receives to a virtual interface, on which we then have a \acs{HTB}-\acs{QDISC} and therefore have the same options as we have with the \acs{HTB}-\acs{QDISC} that handles egress traffic. You can think about this the following way: The virtual interface sends the ingress traffic to the host and therefore the ingress traffic becomes egress traffic from the perspective of the virtual interface. Figure \ref{Interface set-up} should make that clearer. Since this option is more powerful, in the sense that we have more shaping options, this is our option of choice.
-%TODO Justify why virtual interfaces have been chosen. --> stress symetry
+\\The option of using virtual interfaces gives us the same configuration possibilities as we have with egress traffic. At the ingress \acs{QDISC} we simply attach one filter that redirects all the traffic it receives to a virtual interface, on which we then have a \acs{HTB}-\acs{QDISC} and therefore have the same options as we have with the \acs{HTB}-\acs{QDISC} that handles egress traffic. You can think about this the following way: The virtual interface sends the ingress traffic to the host and therefore the ingress traffic becomes egress traffic from the perspective of the virtual interface. Figure \ref{Interface set-up} should make that clearer. Since this option is more powerful, in the sense that we have more shaping options and because using the same egress \acs{QDISC} on the virtual interface as we use on the physical interface gives us the advantage that the entire set-up is more symmetric and therefore easier to understand and debug, this is our option of choice.
+
 \end{enumerate}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{img/Interface-Setup.png}
+	\includegraphics[width=0.9\textwidth]{img/Interface-Setup.png}
 	\caption{Interface set-up}
 	\label{Interface set-up}
 \end{figure}
