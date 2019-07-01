@@ -4,38 +4,26 @@
 
 \subsection{The SCIONLab Website}
 
-In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, I added the \ac{HTML} code snippet visible in listing \ref{HTML code}. This results in an additional text input field (as visible in figure \ref{User-AS Configuration Form}) that allows the user to add an upper limit for the bandwidth. If the user then clicks the \textbf{Create \acs{AS}} button, the input from that field is read into the data model. Updating the configuration of an existing \acs{AS} works similarly.
-
-\begin{lstlisting}[language=html, caption = HTML code snippet of the bandwidth field from user\_as\_form.html, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=HTML code]
-<div class="form-group has-feedback">
-  {{ form.bw_limit.label }}
-  <div class="input-group">
-    {% render_field form.bw_limit class="form-control" %}
-    <div class="input-group-append">
-      <span class="input-group-text bg-white">
-        <span class="fa fa-tachometer"/>
-      </span>
-    </div>
-  </div>
-</div>
-\end{lstlisting}
-
-%TODO update picture with current web interface
+\begin{minipage}{0.45\textwidth}
+In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, I added an additional text input field (as visible in figure \ref{User-AS Configuration Form}) that allows the user to add an upper limit for the bandwidth. If the user then clicks the \textbf{Create \acs{AS}} button, the input from that field is read into the data model. Updating the configuration of an existing \acs{AS} works similarly. The maximum allowed bandwidth limit is the default bandwidth, which is set by the \acs{SCIONLab} administrators.
+\end{minipage} \hfill
+\begin{minipage}{0.5\textwidth}
 \begin{figure}[H]
-
-	\includegraphics[width=0.7\textwidth]{img/user_as_form.png}
+	\includegraphics[width=\textwidth]{img/user_as_form.png}
 	\centering
 	\caption{User-AS Configuration Form}
 	\label{User-AS Configuration Form}
 \end{figure}
+\end{minipage}
 
+\newpage
 \subsection{The Data Model}
 
 The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCIONLab}'s data model is based on Django's data model as shown in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{img/Django_diagram.png}
+	\includegraphics[width=0.9\textwidth]{img/Django_diagram.png}
 	\caption{Django Model Dependency Diagram}
 	\label{Django Model Dependency Diagram}
 \end{figure}
@@ -106,3 +94,4 @@ The virtual interface manager is used to set up and delete the virtual interface
     \caption{UML-Model of \text{tc\_logic.py}}
     \label{tc logic uml}
 \end{figure}
+%TODO Add TC configuration sample link_info.json --> TC configuration
