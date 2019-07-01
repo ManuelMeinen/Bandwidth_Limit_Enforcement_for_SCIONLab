@@ -96,6 +96,17 @@ As we can se in Figure \ref{Evaluation of the Bandwidth (Wondershaper)} and \ref
 
 \newpage
 \subsection{Examination of the Problem with Ingress Traffic}
+
+The length of the buffer from which iPerf3 reads, determines the size of the \acs{IP}-datagram that is being sent, in order to determine the bandwidth. Therefore, if the buffer size is bigger than the \acs{MTU}, then fragmentation happens. The \acl{IP} itself doesn't handle the loss of packets. This is the responsibility of protocols higher above. In our case, we have \acs{UDP} as a  \acs{OSI}-layer 4 protocol. In \acs{UDP}, if a fragment gets lost, then the entire packet is considered lost. Bandwidth limitations using \acs{TC} on egress traffic happen before the datagrams get fragmented and on ingress traffic, the reassembly of the fragments happens after the \acs{TC} configurations had their effect (see figure \ref{Schematic Representation of where Fragmentation happens} for further clarification). This leads to the hypothesis that if iPerf3 sends datagrams that need to be fragmented and tries to send them at a speed that is higher than the enforced bandwidth limit, we measure a significant drop in bandwidth, because some fragments of the datagram get dropped and therefore the entire datagram gets dropped.
+%TODO Continue here... 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{img/Fragmentation.png}
+	\caption{Schematic Representation of where Fragmentation happens}
+	\label{Schematic Representation of where Fragmentation happens}
+\end{figure}
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Evaluation-Bandwidth-Big-Buffer.png}
