@@ -6,18 +6,10 @@ What is known about the environment in which the \textit{scionlab\_bw\_limiter} 
 \section{Test Set-up}
 
 As a test set-up it makes sense to have a test server, which doesn't have any bandwidth limitations and a test client, where the \textit{scionlab\_bw\_limiter} will enforce the desired bandwidth limits. As a test client I decided to use my development \acs{VM}, which I also use to develop and test the \textit{scionlab\_bw\_limiter}. This \acs{VM} runs Ubuntu 18.04, which is a newer version than the one running on the \aclp{AP}, but since \acs{TC} works the same way on both versions of Ubuntu, this should not matter. The test server is a Ubuntu 18.04 server that runs in a \acs{VM} as well and is hosted on the same physical machine as the test client. Therefore traffic between the test server and the test client is not real network traffic, but since the \acs{TC} configurations are effective between the Linux kernel and the network driver, where both of which are virtualized, the \acs{TC} configurations should have the exact same effect in this setting as in the real environment.
-\\
-For testing the bandwidth between the test client and the test server, I chose two different approaches, one of which turned out to be quite useless, whereas the other one seemed to be reasonable.
 
-\subsection{Naive Approach}
-%TODO get rid of that one
-In the beginning it was not that easy to figure out how iPerf3 had to be configured and how the test results were to be interpreted. Therefore I decided to take a simpler approach in order to get an idea on what I should expect from the iPerf3 test results. 
-\\
-I decided to simply generate a file of a certain size, send it either from the server to the client or the other way around and measure the time it takes until it arrives at the other end. Unfortunately it's not that simple. The connection between the two \acsp{VM} is quite fast, even when its bandwidth is limited. However relative to the transmission time, the time to load a file from memory or even from the harddisk is quite long. Therefore the measurements were highly inaccurate.
+\subsection{Set-Up Using iPerf3}
 
-\subsection{Using iPerf3}
-
-Since the naive approach turned out to be to inaccurate to be of any use, I decided to set up an iPerf3 test environment. I installed iPerf3 on both the test client as well as on the test server and let the test server run iPerf3 as a server. Note that the same software is used for both the server side as well as the client side. They just run in different modes. On the client I can now connect to the test server and run highly customisable tests with the server. Normally the client is the one sending data to the server, but iPerf3 can be run in a reverse mode (using the \textit{-R} option), such that we can test both ingress as well as egress traffic without having to switch between client and server mode on our machines.
+I installed iPerf3 on both the test client as well as on the test server and let the test server run iPerf3 as a server. Note that the same software is used for both the server side as well as the client side. They just run in different modes. On the client I can now connect to the test server and run highly customisable tests with the server. Normally the client is the one sending data to the server, but iPerf3 can be run in a reverse mode (using the \textit{-R} option), such that we can test both ingress as well as egress traffic without having to switch between client and server mode on our machines.
 
 \section{iPerf3}
 
@@ -26,7 +18,7 @@ iPerf3 is a state of the art network performance measurement tool. It is a succe
 iPerf3 can test both \ac{TCP} as well as \acs{UDP} traffic. In our case we only need to test \acs{UDP} traffic. This can be done by passing the option \textit{-u} as an argument to iPerf3. When running it we need to specify a target bandwidth (option \textit{-b}). iPerf3 then tries to achieve this bandwidth by sending traffic out at this rate. To run iPerf3 in server mode we only have to pass \textit{-s} as an argument. For running it in the client mode we have to analogously pass the \textit{-c} option followed by the server's \acs{IP}-address. Last but not least, we can optionally set the buffer length of the buffer from which is sent and to which is received by passing the option \textit{-l} followed by a size in bytes as an argument. As we will see in section \ref{Test Results}, this option is of quite a significance.
 
 \section{Test Results}\label{Test Results}
-%TODO figure out what l realy means and why it influences the bandwidth
+
 The following test results occurred under the following configuration:
 \\
 The server's \acs{IP}-address is in our case 192.168.17.129, the \acs{IP}-connection to the server is limited to 500Kbps and the default bandwidth is 1000Kbps. The \ac{MTU} parameter in \acs{TC} is set to the \acs{MTU} of the network interface that is used to connect to the specific \acs{IP}-address. In our case this is 1500 bytes. The burst parameter, which is the size of the bucket in the \acs{TBF} algorithm is set to 5K. The ceil rate is the same as the normal rate, which is 500Kbps to the test server and 1000Kbps to any other \acs{IP}-device that uses the same interface.
@@ -37,7 +29,7 @@ On the test server, we start iPerf3 using no other options than the \textit{-s} 
 \begin{lstlisting}[language=sh, caption = Test Server Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Test Server Command]
 iperf3 -s
 \end{lstlisting}
-\newpage
+
 \begin{lstlisting}[language=sh, caption = Example Egress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Example Egress Test Command]
 iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000
 \end{lstlisting}
@@ -45,6 +37,8 @@ iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000
 \begin{lstlisting}[language=sh, caption = Example Ingress Test Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Example Ingress Test Command]
 iperf3 -c 192.168.17.129 -u -b 2Mbit -l 1000 -R
 \end{lstlisting}
+
+\newpage
 
 \subsection{Interpretation of the Test Results}
 
@@ -97,8 +91,7 @@ As we can se in Figure \ref{Evaluation of the Bandwidth (Wondershaper)} and \ref
 \newpage
 \subsection{Examination of the Problem with Ingress Traffic}
 
-The length of the buffer from which iPerf3 reads, determines the size of the \acs{IP}-datagram that is being sent, in order to determine the bandwidth. Therefore, if the buffer size is bigger than the \acs{MTU}, then fragmentation happens. The \acl{IP} itself doesn't handle the loss of packets. This is the responsibility of protocols higher above. In our case, we have \acs{UDP} as a  \acs{OSI}-layer 4 protocol. In \acs{UDP}, if a fragment gets lost, then the entire packet is considered lost. Bandwidth limitations using \acs{TC} on egress traffic happen before the datagrams get fragmented and on ingress traffic, the reassembly of the fragments happens after the \acs{TC} configurations had their effect (see figure \ref{Schematic Representation of where Fragmentation happens} for further clarification). This leads to the hypothesis that if iPerf3 sends datagrams that need to be fragmented and tries to send them at a speed that is higher than the enforced bandwidth limit, we measure a significant drop in bandwidth, because some fragments of the datagram get dropped and therefore the entire datagram gets dropped.
-%TODO Continue here... 
+The length of the buffer from which iPerf3 reads, determines the size of the \acs{IP}-datagram that is being sent, in order to determine the bandwidth. Therefore, if the buffer size is bigger than the \acs{MTU}, fragmentation happens. The \acl{IP} itself doesn't handle the loss of packets. This is the responsibility of protocols higher above in the \acs{OSI} model. In our case, we have \acs{UDP} as a  \acs{OSI}-layer 4 protocol. In \acs{UDP}, if a fragment gets lost, then the entire packet is considered lost. Bandwidth limitations using \acs{TC} on egress traffic happen before the datagrams get fragmented and on ingress traffic, the reassembly of the fragments happens after the \acs{TC} configurations had their effect (see figure \ref{Schematic Representation of where Fragmentation happens} for further clarification). This leads to the hypothesis that if iPerf3 sends datagrams that need to be fragmented and tries to send them at a speed that is higher than the enforced bandwidth limit, we measure a significant drop in bandwidth, because some fragments of the datagram get dropped and therefore the entire datagram gets dropped.
 
 \begin{figure}[h]
 	\centering
@@ -106,6 +99,13 @@ The length of the buffer from which iPerf3 reads, determines the size of the \ac
 	\caption{Schematic Representation of where Fragmentation happens}
 	\label{Schematic Representation of where Fragmentation happens}
 \end{figure}
+
+To figure out whether the previously mentioned hypothesis holds, we again run two different tests. This time we fix the buffer length and vary the target bandwidth from 100 Kbps to 1000 Kbps (option \textit{-b}). The upper limit for the bandwidth is still 500 Kbps and has been enforced using the \textit{scionlab\_bw\_limiter}. 
+\\
+For the first test, we set a buffer length of 10000 Bytes, while having a \acs{MTU} of 1500 Bytes. Therefore, fragmentation is going to happen in this case. Figure \ref{Evaluation of the Bandwidth with a Buffer of Size 10000 Bytes} shows the results of this test. As we see, as long as the target bandwidth is below the bandwidth limit of 500 Kbps, ingress traffic reaches the desired target bandwidth. However, as soon as we try to send traffic at a higher rate than the enforced limit, we see the significant drop in bandwidth that we observed beforehand. As figure \ref{Evaluation of Bandwidth Drops with a Buffer of Size 100000 Bytes} shows, a lot of samples experience a bandwidth drop to a bandwidth of zero as soon as they try to reach a bandwidth above the enforced limit. For egress traffic, iPerf3 fails to reach a target bandwidth, because it tries to send at least 10 datagrams per second, with each datagram having the size of the buffer. Therefore, the effective bandwidth for egress traffic is: 
+$$\text{effective bandwidth} = max\left\lbrace\frac{10\cdot \text{buffer size}}{1},\text{target bandwidth}\right\rbrace$$ 
+
+The fact that ingress traffic behaves as expected if we have a target bandwidth which is below the enforced limit, regardless of the buffer size, shows that the enforced limit is responsible for the bandwidth drop of ingress traffic. To make sure that this drop is caused by fragmentation and not by wrong \acs{TC} configurations, we run a second test, where we set the buffer size to the size of the \acs{MTU}. If the hypothesis is valid and the bandwidth drop is caused by fragmentation, then we should see that the reached bandwidth is what we expect.
 
 \begin{figure}[h]
 	\centering
@@ -120,6 +120,11 @@ The length of the buffer from which iPerf3 reads, determines the size of the \ac
 	\caption{Evaluation of Bandwidth Drops with a Buffer of Size 100000 Bytes}
 	\label{Evaluation of Bandwidth Drops with a Buffer of Size 100000 Bytes}
 \end{figure}
+\newpage
+
+For the second test, we set the buffer size to 1500 Bytes, which is the size of the \acs{MTU}. As visible in figure \ref{Evaluation of the Bandwidth with a Buffer of Size 1500 Bytes (Size of the MTU)}, both ingress as well as egress traffic first reach the target bandwidth, for as long as it is below the enforced bandwidth limit, and then it stabilizes approximately around the bandwidth limit. As expected, egress traffic stabilizes slightly above the enforced limit, because we allow short bursts at a higher bandwidth. Ingress traffic stabilizes as well, but also as expected, slightly below the enforced bandwidth limit, because there is a certain overhead caused by redirecting ingress traffic to a virtual interface.
+\\
+Therefore, we can conclude that the previously discovered strange behaviour of ingress traffic is not a side effect of the \textit{scionlab\_bw\_limiter} but instead is normal behaviour that is caused by fragmentation. Since our goal was to limit the bandwidth the same way a slow link would, we have to accept this behaviour and can therefore say that the bandwidth limitation were enforced successfully.
 
 \begin{figure}[h]
 	\centering
