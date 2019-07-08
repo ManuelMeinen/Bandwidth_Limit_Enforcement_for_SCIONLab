@@ -21,7 +21,7 @@ For an \acs{AS} to join a \acs{SCION} network is quite easy. All the \acs{AS} ha
 \newpage
 
 \subsection{Topology}
-%TODO check if right
+
 Figure \ref{Basic SCION Topology} shows an example of a basic \acs{SCION} topology. In this example we have two \aclp{ISD}. One \acs{ISD} is managed by three, the other one by two core-\acsp{AS}. What this figure doesn't show, is that \acsp{ISD} can be overlapping. 
 
 \begin{figure}[h]
@@ -71,7 +71,7 @@ There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one
 \newpage
 
 \subsection{Topology}
-%TODO check if right
+
 Figure \ref{Basic SCIONLab Topology} shows how the \acs{SCIONLab}-Network is set up. The user-\acsp{AS} are hosted by the users and connect to \acs{SCIONLab} by setting up a connection to an \acs{AP}. By doing so, the user-\acs{AS} automatically joins the \acl{AP}s \acs{ISD}. Infrastructure-\acsp{AS} are \acsp{AS} that are permanently connected to the \acs{SCIONLab}-Network and take part in routing and forwarding packets according to the \acs{SCION} protocol (\acsp{AP} are infrastructure-\acsp{AS} as well). Even though it's not shown in figure \ref{Basic SCIONLab Topology} the \acsp{AS} of \acs{SCIONLab} are of course also grouped into \acsp{ISD}. The only difference between \aclp{AP} and other infrastructure-\acsp{AS} is that \acsp{AP} allow connections to user-\acsp{AS}, while the normal infrastructure-\acsp{AS} don't.
 
 \begin{figure}[h]
