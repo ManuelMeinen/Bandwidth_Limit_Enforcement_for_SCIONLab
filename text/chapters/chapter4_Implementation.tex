@@ -23,14 +23,14 @@ The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCION
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{img/Django_diagram.png}
+	\includegraphics[width=0.85\textwidth]{img/Django_diagram.png}
 	\caption{Django Model Dependency Diagram}
 	\label{Django Model Dependency Diagram}
 \end{figure}
 
 \subsection{Attachment Point Configuration}
 
-On the \aclp{AP} there will be a Python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
+On the \aclp{AP} there will be a Python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} (with the \textit{-l} option) in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
 
 \section{Back End}
 
@@ -93,5 +93,55 @@ The virtual interface manager is used to set up and delete the virtual interface
     \caption{UML-Model of \text{tc\_logic.py}}
     \label{tc logic uml}
 \end{figure}
-%TODO Add TC configuration sample link_info.json --> TC configuration
-%TODO mention somewhere that scionlab_bw_limiter -l is invoked on the AP
+
+\newpage
+\textit{ }
+\newpage
+\subsection{Configuration Example}
+
+This example shows how the \textit{link\_info.json} file gets turned into \acs{TC} configuration using the \textit{scionlab\_bw\_limiter}. Listing \ref{link_info.json} shows the entries for two user-\acsp{AS}.  The first one is connected to the \acs{AP} via an \acs{IP}v6 connection, whereas the second user-\acs{AS} uses an \acs{IP}v4 connection. Both \acsp{AS} have a bandwidth limit of 500 Kbps and the default bandwidth is 1000 Kbps. Listing \ref{TC Configuration} shows how \acs{TC} gets configured accordingly. Note that the \textit{scionlab\_bw\_limiter} also needs to set up the virtual interfaces. But since this is not really dependant on the \textit{link\_info.json} file, I omitted this part for the sake of readability. 
+
+\begin{lstlisting}[language=sh, caption = link\_info.json, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=link_info.json]
+{
+    "1": {
+        "AS_ID": 1,
+        "IsUserAS": true,
+        "Bandwidth": 500,
+        "IP-Address": "fe80::20c:29ff:fe08:993c"
+    },
+    "2": {
+        "AS_ID": 2,
+        "IsUserAS": true,
+        "Bandwidth": 500,
+        "IP-Address": "192.168.17.129"
+    }
+}
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[language=sh, caption = TC Configuration, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=TC Configuration, basicstyle=\normalsize]
+# Create root QDISC on the physical interface
+sudo tc qdisc add dev ens33 root handle 1: htb default 9999
+# Create classes
+sudo tc class add dev ens33 parent 1:0 classid 1:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
+sudo tc class add dev ens33 parent 1:0 classid 1:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
+sudo tc class add dev ens33 parent 1:0 classid 1:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
+# Create classifier filters 
+sudo tc filter add dev ens33 u32 match ip6 dst fe80::20c:29ff:fe08:993c/128 flowid 1:1
+sudo tc filter add dev ens33 u32 match ip dst 192.168.17.129/32 flowid 1:2
+# Create ingress QDISC on the physical interface
+sudo tc qdisc add dev ens33 handle ffff: ingress
+# Create redirect filters
+sudo tc filter add dev ens33 parent ffff: protocol ip u32 match ip src 0.0.0.0/0 action mirred egress redirect dev ifb0
+sudo tc filter add dev ens33 parent ffff: protocol ipv6 u32 match ip6 src ::0/0 action mirred egress redirect dev ifb0
+# Create root QDISC on the virtual interface
+sudo tc qdisc add dev ifb0 root handle 2: htb default 9999
+# Create classes
+sudo tc class add dev ifb0 parent 2:0 classid 2:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
+sudo tc class add dev ifb0 parent 2:0 classid 2:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
+sudo tc class add dev ifb0 parent 2:0 classid 2:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
+# Create classifier filters
+sudo tc filter add dev ifb0 u32 match ip6 src fe80::20c:29ff:fe08:993c/128 flowid 2:1
+sudo tc filter add dev ifb0 u32 match ip src 192.168.17.129/32 flowid 2:2
+\end{lstlisting}
