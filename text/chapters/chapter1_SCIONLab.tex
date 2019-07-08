@@ -1,4 +1,5 @@
 \chapter{SCION/SCIONLab}
+
 \section{SCION}
 \acs{SCION} is a new internet architecture invented by Prof. Adrian Perrig and his fellow researchers. It's goal is to deliver scalability, control and isolation on next-generation networks. \acs{SCION} differentiates between a control plane and a data plane, which are completely separated from each other to increase robustness. Failures in the control plane therefore don't immediately affect the availability of the data plane and vice versa.
 
@@ -17,8 +18,18 @@ More details on how paths can be combined can be found in chapter 8 of the \acs{
 \subsection{Joining a SCION Network}
 For an \acs{AS} to join a \acs{SCION} network is quite easy. All the \acs{AS} has to do is setting up at least one path server, one beacon server, one certificate server and one \acs{SCION} border router. Then it buys connectivity from an AS that is already in the \acs{ISD} that the \acs{AS} wants to join as well. By joining the \acs{ISD} the \acs{AS} accepts the \acs{TRC} configured for this \acs{ISD}.
 
+\newpage
+
 \subsection{Topology}
-%TODO find a good figure to describe a typical SCION topology
+%TODO check if right
+Figure \ref{Basic SCION Topology} shows an example of a basic \acs{SCION} topology. In this example we have two \aclp{ISD}. One \acs{ISD} is managed by three, the other one by two core-\acsp{AS}. What this figure doesn't show, is that \acsp{ISD} can be overlapping. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width =\textwidth]{img/SCION-Topology.png}
+	\caption{Basic SCION Topology}
+	\label{Basic SCION Topology}
+\end{figure}
 
 \section{SCIONLab}
 \acs{SCIONLab} is the distributed testbed for \acs{SCION}. Most of the network is managed by the Network Security Group of \acs{ETH} Zurich. The \acsp{AS} that are not managed by \acs{ETH} Zurich are called user-\acsp{AS}. Each of them is typically attached to one of the few \aclp{AP} that are part of the network infrastructure managed by \acs{ETH}. The \acsp{AP} are the only \acsp{AS} that allow direct connections to user-\acsp{AS}.
@@ -45,6 +56,8 @@ As shown in figure \ref{SCIONLab-AS} the \acl{BR} is also responsible for wrappi
 	\label{SCIONLab-AS}
 \end{figure}
 
+\newpage
+
 \subsection{SCIONLab AS}
 There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one is to set it up in a \acs{VM}. The other option is to set it up on a dedicated \acs{SCION} system. Either way, you can do that by creating an account on \href{https://www.scionlab.org}{scionlab.org} and use the web interface to configure your \acs{AS} to your needs. This web portal is called \acs{SCIONLab} Coordination Service. After you configured your \acs{AS}, you can download the files that are used to either set up the \acs{VM} or the dedicated \acs{SCION} system. The \acl{AP} needs some time to receive the new configuration files to set up the connection to the user-\acs{AS}. When the \acs{AP} is ready, you will receive an e-mail that informs you about it. As visible in figure \ref{SCIONLab Coordination Service} the current version of the \acs{SCIONLab} Coordination Service doesn't allow you to configure any bandwidth limits.
 
@@ -55,5 +68,15 @@ There are two main ways to set up a \acs{SCIONLab}-\acs{AS}. The most common one
 	\label{SCIONLab Coordination Service}
 \end{figure}
 
+\newpage
+
 \subsection{Topology}
-%TODO find a good way to explain a typical SCIONLab topology
+%TODO check if right
+Figure \ref{Basic SCIONLab Topology} shows how the \acs{SCIONLab}-Network is set up. The user-\acsp{AS} are hosted by the users and connect to \acs{SCIONLab} by setting up a connection to an \acs{AP}. By doing so, the user-\acs{AS} automatically joins the \acl{AP}s \acs{ISD}. Infrastructure-\acsp{AS} are \acsp{AS} that are permanently connected to the \acs{SCIONLab}-Network and take part in routing and forwarding packets according to the \acs{SCION} protocol (\acsp{AP} are infrastructure-\acsp{AS} as well). Even though it's not shown in figure \ref{Basic SCIONLab Topology} the \acsp{AS} of \acs{SCIONLab} are of course also grouped into \acsp{ISD}. The only difference between \aclp{AP} and other infrastructure-\acsp{AS} is that \acsp{AP} allow connections to user-\acsp{AS}, while the normal infrastructure-\acsp{AS} don't.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width =\textwidth]{img/SCIONLab-Topology.png}
+	\caption{Basic SCIONLab Topology}
+	\label{Basic SCIONLab Topology}
+\end{figure}

@@ -31,7 +31,6 @@ The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCION
 \subsection{Attachment Point Configuration}
 
 On the \aclp{AP} there will be a Python file called \textit{scionlab\_config.py}. This file is responsible for configuring the \acsp{AP} and to restart the \acs{SCION} services after the configurations changed. Therefore, whenever we restart the \acs{SCION} services, we also have to invoke the \textit{scionlab\_bw\_limiter} in order to modify the \acs{TC} configuration according to the current \textit{link\_info.json} file. It is important to note that \acs{TC} configurations get automatically reset after each reboot and therefore need to be re-enforced every time the \acs{AP} restarts.
-%TODO figure out how to do that...
 
 \section{Back End}
 
