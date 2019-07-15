@@ -19,7 +19,7 @@ For our needs, traffic shaping fits best. But since we need to limit ingress tra
 
 \subsection{Queuing Disciplines}
 
-A \acs{QDISC} or \acl{QDISC} is the controlling unit that sits between the kernel and the interface. Whenever the kernel wants to send something to an interface, it enqueues it via the \acs{QDISC} attached to the interface. The kernel then immediately tries to get as many packets as possible from the \acs{QDISC} in order to send them to the network adapter driver. The \acs{QDISC} can therefore decide in what manner it allows the kernel to get the packets back in order to send them. Therefore, it is clear that there are very sophisticated egress \acsp{QDISC}, while there is only one very primitive ingress \acs{QDISC}.
+A \acs{QDISC} or \acl{QDISC} is the controlling unit that sits between the kernel and the network interface. Whenever the kernel wants to send something to an interface, it enqueues it via the \acs{QDISC} attached to the interface. The kernel then immediately tries to get as many packets as possible from the \acs{QDISC} in order to send them to the network adapter driver. The \acs{QDISC} can therefore decide in what manner it allows the kernel to get the packets back in order to send them. Therefore, it is clear that there are very sophisticated egress \acsp{QDISC}, while there is only one very primitive ingress \acs{QDISC}.
 \\
 As we will see in section \ref{Traffic Shaping}, \acsp{QDISC} can be either classful or classless. If we want to do more than just simple policing or dropping then it is recommended to use classful \acsp{QDISC}, simply because classful \acsp{QDISC} can be configured more precisely, which makes them more powerful.
 
