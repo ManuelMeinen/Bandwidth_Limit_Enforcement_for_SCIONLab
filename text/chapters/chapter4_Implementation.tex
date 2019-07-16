@@ -99,7 +99,7 @@ The virtual interface manager is used to set up and delete the virtual interface
 \newpage
 \subsection{Configuration Example}
 
-This example shows how the \textit{link\_info.json} file gets turned into \acs{TC} configuration using the \textit{scionlab\_bw\_limiter}. Listing \ref{link_info.json} shows the entries for two user-\acsp{AS}.  The first one is connected to the \acs{AP} via an \acs{IP}v6 connection, whereas the second user-\acs{AS} uses an \acs{IP}v4 connection. Both \acsp{AS} have a bandwidth limit of 500 Kbps and the default bandwidth is 1000 Kbps. Listing \ref{TC Configuration} shows how \acs{TC} gets configured accordingly. Note that the \textit{scionlab\_bw\_limiter} also needs to set up the virtual interfaces. But since this is not really dependant on the \textit{link\_info.json} file, I omitted this part for the sake of readability. 
+This example shows how the \textit{link\_info.json} file gets turned into \acs{TC} configuration using the \textit{scionlab\_bw\_limiter}. Listing \ref{link_info.json} shows the entries for two user-\acsp{AS}.  The first one is connected to the \acs{AP} via an \acs{IP}v6 connection, whereas the second user-\acs{AS} uses an \acs{IP}v4 connection. Both \acsp{AS} have a bandwidth limit of 500 Kbps and the default bandwidth is 1000 Kbps. Listing \ref{TC Configuration} shows how \acs{TC} gets configured accordingly. Note that the \textit{scionlab\_bw\_limiter} also needs to set up the virtual interfaces. But since this is not really dependant on the \textit{link\_info.json} file, I omitted this part for the sake of readability. Furthermore, it is worth noticing that \acs{TC} needs to be executed with root privileges, therefore in order to run the commands from listing \ref{TC Configuration} simply prepend the \textit{sudo} command.
 
 \begin{lstlisting}[language=sh, caption = link\_info.json, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=link_info.json]
 {
@@ -122,26 +122,26 @@ This example shows how the \textit{link\_info.json} file gets turned into \acs{T
 
 \begin{lstlisting}[language=sh, caption = TC Configuration, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=TC Configuration, basicstyle=\normalsize]
 # Create root QDISC on the physical interface
-sudo tc qdisc add dev ens33 root handle 1: htb default 9999
+tc qdisc add dev ens33 root handle 1: htb default 9999
 # Create classes
-sudo tc class add dev ens33 parent 1:0 classid 1:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
-sudo tc class add dev ens33 parent 1:0 classid 1:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
-sudo tc class add dev ens33 parent 1:0 classid 1:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
+tc class add dev ens33 parent 1:0 classid 1:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
+tc class add dev ens33 parent 1:0 classid 1:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
+tc class add dev ens33 parent 1:0 classid 1:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
 # Create classifier filters 
-sudo tc filter add dev ens33 u32 match ip6 dst fe80::20c:29ff:fe08:993c/128 flowid 1:1
-sudo tc filter add dev ens33 u32 match ip dst 192.168.17.129/32 flowid 1:2
+tc filter add dev ens33 u32 match ip6 dst fe80::20c:29ff:fe08:993c/128 flowid 1:1
+tc filter add dev ens33 u32 match ip dst 192.168.17.129/32 flowid 1:2
 # Create ingress QDISC on the physical interface
-sudo tc qdisc add dev ens33 handle ffff: ingress
+tc qdisc add dev ens33 handle ffff: ingress
 # Create redirect filters
-sudo tc filter add dev ens33 parent ffff: protocol ip u32 match ip src 0.0.0.0/0 action mirred egress redirect dev ifb0
-sudo tc filter add dev ens33 parent ffff: protocol ipv6 u32 match ip6 src ::0/0 action mirred egress redirect dev ifb0
+tc filter add dev ens33 parent ffff: protocol ip u32 match ip src 0.0.0.0/0 action mirred egress redirect dev ifb0
+tc filter add dev ens33 parent ffff: protocol ipv6 u32 match ip6 src ::0/0 action mirred egress redirect dev ifb0
 # Create root QDISC on the virtual interface
-sudo tc qdisc add dev ifb0 root handle 2: htb default 9999
+tc qdisc add dev ifb0 root handle 2: htb default 9999
 # Create classes
-sudo tc class add dev ifb0 parent 2:0 classid 2:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
-sudo tc class add dev ifb0 parent 2:0 classid 2:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
-sudo tc class add dev ifb0 parent 2:0 classid 2:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
+tc class add dev ifb0 parent 2:0 classid 2:9999 htb rate 1000kbit ceil 1000kbit burst 5k prio 9999 mtu 1500
+tc class add dev ifb0 parent 2:0 classid 2:1 htb rate 500kbit ceil 500kbit burst 5k prio 1 mtu 1500
+tc class add dev ifb0 parent 2:0 classid 2:2 htb rate 500kbit ceil 500kbit burst 5k prio 2 mtu 1500
 # Create classifier filters
-sudo tc filter add dev ifb0 u32 match ip6 src fe80::20c:29ff:fe08:993c/128 flowid 2:1
-sudo tc filter add dev ifb0 u32 match ip src 192.168.17.129/32 flowid 2:2
+tc filter add dev ifb0 u32 match ip6 src fe80::20c:29ff:fe08:993c/128 flowid 2:1
+tc filter add dev ifb0 u32 match ip src 192.168.17.129/32 flowid 2:2
 \end{lstlisting}
