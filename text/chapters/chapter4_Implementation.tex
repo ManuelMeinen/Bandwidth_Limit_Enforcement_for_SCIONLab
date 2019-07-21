@@ -55,7 +55,7 @@ This file contains the implementation of the \textit{limit()}, \textit{reset()} 
 
 \item[$\bullet$]\textit{code\_base/cmd\_executor.py}:
 \\
-The command executor implements some static helper functions, that simplify running a command on the command line. One function silently runs a command using the subprocess \acs{API}, an other one runs a command and prints it to the console, one runs the command silently but returns the output it received by running the command and finally one function runs a command after printing it and returns the output.
+The command executor implements some static helper functions, that simplify running a command on the command line. One function silently runs a command using the subprocess \acs{API}, an other one runs a command and prints it to the console, a third one runs the command silently but returns the output it received by running the command and finally one function runs a command after printing it and returns the output.
 
 \item[$\bullet$]\textit{code\_base/constants.py}:
 \\
@@ -67,7 +67,7 @@ This file is used to retrieve information about the interfaces configured on the
 
 \item[$\bullet$]\textit{code\_base/links.py}:
 \\
-Analogously to the \textit{interfaces.py} file, the \textit{links.py} file is used to bundle together information about links. This information is parsed form the \textit{link\_info.json} file. Furthermore, in this file, the virtual interfaces are set up and mapped to their corresponding physical counterpart.
+Analogously to the \textit{interfaces.py} file, the \textit{links.py} file is used to bundle together information about links. This information is parsed from the \textit{link\_info.json} file. Furthermore, in this file, the virtual interfaces are set up and mapped to their corresponding physical counterpart.
 
 \item[$\bullet$]\textit{code\_base/systeminfo.py}:
 \\
@@ -79,7 +79,7 @@ The \acs{TC} command generator is used to generate the \acs{TC} commands that ar
 
 \item[$\bullet$]\textit{code\_base/tc\_logic.py}:
 \\
-This file is the centrepiece of the entire program. It defines the building blocks to build up the entire logic of our \acs{TC} hierarchy according to figure \ref{QDISC-Set-up}. The \ac{UML}-model in figure \ref{tc logic uml} visualizes the relevant building blocks and their attributes and functions. The most interesting function is probably the \textit{make()} function. It first uses the \acs{TC} command generator to get the command to turn it's properties into \acs{TC} configurations, executes the command using the command executor and then recursively calls \textit{make()} on the building blocks that are lower down in the hierarchy tree. Like this the entire \acs{TC} logic can be turned into \acs{TC} configuration on the host. 
+This file is the centrepiece of the entire program. It defines the building blocks to build up the entire logic of our \acs{TC} hierarchy according to figure \ref{QDISC-Set-up}. The \ac{UML}-model in figure \ref{tc logic uml} visualizes the relevant building blocks and their attributes and functions. The most interesting function is probably the \textit{make()} function. It first uses the \acs{TC} command generator to get the command to turn its properties into \acs{TC} configurations, executes the command using the command executor and then recursively calls \textit{make()} on the building blocks that are lower down in the hierarchy tree. Like this the entire \acs{TC} logic can be turned into \acs{TC} configuration on the host. 
 
 \item[$\bullet$]\textit{code\_base/virtual\_interfaces\_manager.py}:
 \\
@@ -90,7 +90,7 @@ The virtual interface manager is used to set up and delete the virtual interface
 \begin{figure}[h]
 	\centering
   	\includegraphics[width=\textwidth]{img/tc_logic_uml.png}
-    \caption{UML-Model of \text{tc\_logic.py}}
+    \caption{UML-Model of \text{tc\_logic.py} (UML 2.0)}
     \label{tc logic uml}
 \end{figure}
 
