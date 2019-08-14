@@ -19,7 +19,7 @@ In the configuration form for user-\acsp{AS} of \acs{SCIONLab}'s web interface, 
 \newpage
 \subsection{The Data Model}
 
-The \acs{SCIONLab} server is based on the Django framework. Therefore \acs{SCIONLab}'s data model is based on Django's data model as shown in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
+The \acs{SCIONLab} server is based on the Django framework. Therefore, \linebreak \acs{SCIONLab}'s data model is based on Django's data model as shown in figure \ref{Django Model Dependency Diagram}. The bandwidth limit is stored as an attribute in the \textit{Link} class. As visible in figure \ref{Django Model Dependency Diagram}, the \textit{Host} class can access all of its interfaces and therefore also all of its links. The \textit{Host} class represents the \acs{VM}, container or physical machine hosting the \acs{SCION} services. Since the host can access all information we need to generate the \textit{link\_info.json} file, we hand a host object as an argument into the function \textit{generate\_link\_info(host)} of the file \textit{bandwidth\_config.py}. This function returns a dictionary which is used in the \textit{config\_tar.py} file to generate a \acs{JSON} file and add the \textit{link\_info.json} file to the tarball that is later deployed to the \acl{AP}.
 
 \begin{figure}[H]
 	\centering
@@ -39,7 +39,7 @@ The back end consists mainly of the Python files listed below. Additionally ther
 \begin{enumerate}
 \item[$\bullet$]\textit{scionlab\_bw\_limiter}:
 \\
-This file implements the entry point of the entire program. It parses command line arguments, let's you configure the default bandwidth and the path to the \textit{link\_info.json} file and invokes the \textit{bandwidth\_configurator.py} in order to enforce or reset bandwidth limitations or to show the current \acs{TC} configuration. It accepts the following options:
+This file implements the entry point of the entire program. It parses command line arguments, let's you configure the default bandwidth and the path to the \textit{link\_info.json} file and invokes the \linebreak \textit{bandwidth\_configurator.py} in order to enforce or reset bandwidth limitations or to show the current \acs{TC} configuration. It accepts the following options:
 	\begin{enumerate}
 	\item[\textit{-h}:] Show help text that explains how to use the program. This text is stored in the \textit{config\_files/help.json} file.
 	\item[\textit{-l}:] Enforce the bandwidth limitations according to the \textit{link\_info.json} file.
