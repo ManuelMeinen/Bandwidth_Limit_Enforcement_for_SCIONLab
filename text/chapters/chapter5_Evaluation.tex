@@ -8,7 +8,7 @@ In this chapter we will first discuss the general test set-up, then a first test
 
 \newpage
 
-\section{Test Set-up}
+\section{Test Set-Up}
 
 As a test set-up it makes sense to have a test server, which doesn't have any bandwidth limitations and a test client, where the \textit{scionlab\_bw\_limiter} will enforce the desired bandwidth limits. As a test client I decided to use my development \acs{VM}, which I also use to develop and test the \textit{scionlab\_bw\_limiter}. This \acs{VM} runs Ubuntu 18.04, which is a newer version than the one running on the \aclp{AP}, but since \acs{TC} works the same way on both versions of Ubuntu, this should not matter. The test server is a Ubuntu 18.04 server that runs in a \acs{VM} as well and is hosted on the same physical machine as the test client. Therefore traffic between the test server and the test client is not real network traffic, but since the \acs{TC} configurations are effective between the Linux kernel and the network driver, where both of which are virtualized, the \acs{TC} configurations should have the exact same effect in this setting as in the real environment.
 
@@ -71,10 +71,10 @@ However, for ingress traffic it is a bit a different story. That the ingress ban
 
 \subsection{Comparison with Wondershaper}
 
-\textit{Wondershaper} is an open-source program that has been developed by some of the major contributors of the \textit{Linux advanced routing \& traffic control HOWTO}\cite
+\textit{Wondershaper} is an open-source program that has been developed by some of the major contributors of the \textit{Linux advanced routing \& traffic control \linebreak HOWTO}\cite
 {hubert2002linux}. The code of \textit{wondershaper} can be found on \href{https://github.com/magnific0/wondershaper}{github.com}\cite{hubert2002wondershaper}. \textit{Wondershaper} only allows the user to enforce a general bandwidth limit and not individual bandwidth limits per \acs{IP}-address. On the other hand it allows us to set an ingress bandwidth that is different from the egress bandwidth. But since we don't require that, we just set the same bandwidth limits in both cases on the interface that is used to connect to the test server. Listing \ref{Wondershaper command} shows the command that has been used in order to enforce a bandwidth limit of 500Kbps on interface \textit{ens33}.
 
-\begin{lstlisting}[language=sh, caption = Wondershaper command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Wondershaper command]
+\begin{lstlisting}[language=sh, caption = Wondershaper Command, captionpos=b, numbers=left, frame=single, breaklines=true, breakatwhitespace=true, showstringspaces=false, label=Wondershaper command]
 sudo ./wondershaper -a ens33 -u 500 -d 500
 \end{lstlisting}
 
