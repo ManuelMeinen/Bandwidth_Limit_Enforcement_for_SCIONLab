@@ -1,4 +1,5 @@
 # Bandwidth Limit Enforcement for SCIONLab
+The thesis can be found [here](thesis.pdf).
 ## Abstract
 This bachelor thesis project discusses the design, implementation and evaluation of an automated mechanism that enforces an upper bandwidth limit for the SCIONLab network infrastructure.  
 The upper bandwidth limits are enforced on SCIONLab’s Attachment Points and hold for both ingress as well as egress traffic between the
