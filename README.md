@@ -16,6 +16,12 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## About SCION/SCIONLab
 To learn more about SCIONLab visit:   
-https://www.scionlab.org  
+[www.scionlab.org](https://www.scionlab.org)  
 To learn more about SCION visit:  
-https://www.scion-architecture.net
+[www.scion-architecture.net](https://www.scion-architecture.net)
+
+## About ETH Zurich
+This bachelor thesis project was conducted at ETH Zurich.  
+To learn more about ETH Zurich visit:   
+[www.ethz.ch](https://ethz.ch/en.html)  
+
